@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="am">
 <head>
   <meta charset="UTF-8">
@@ -7,67 +7,26 @@
   <style>
     :root {
       --primary: #10b981;
-      --primary-hover: #059669;
       --bg: #0f172a;
       --card-bg: #1e293b;
       --card-inner: #0f172a;
       --border: #334155;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --accent: #f59e0b;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
-
-    /* Header & Branding */
     header {
       background: linear-gradient(135deg, #059669 0%, #10b981 100%);
       color: white;
       padding: 24px 20px;
       border-bottom-left-radius: 26px;
       border-bottom-right-radius: 26px;
-      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.35);
       text-align: center;
     }
-    .shop-brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 6px;
-    }
-    .shop-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: white;
-      border: 2px solid white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    header h1 { font-size: 1.35rem; font-weight: 800; }
-    header p { font-size: 0.85rem; opacity: 0.95; }
-
     .container { max-width: 520px; margin: 0 auto; padding: 18px 14px; }
-
-    .section-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin: 16px 0 12px 2px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #38bdf8;
-    }
-
-    /* Product Grid Showcase */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 24px;
-    }
+    .section-title { font-size: 1.05rem; font-weight: 700; margin: 16px 0 12px 2px; color: #38bdf8; }
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px; }
     .product-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -76,31 +35,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
-      transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .product-card:active { transform: scale(0.97); }
-    .product-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .product-icon {
-      font-size: 1.8rem;
-      background: var(--card-inner);
-      width: 46px;
-      height: 46px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
+    .product-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .product-icon { font-size: 1.8rem; background: var(--card-inner); width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
     .product-info { flex: 1; }
-    .product-name { font-size: 0.9rem; font-weight: 700; line-height: 1.2; }
-    .product-price { font-size: 0.85rem; color: #34d399; font-weight: 700; margin-top: 3px; }
-
+    .product-name { font-size: 0.9rem; font-weight: 700; }
+    .product-price { font-size: 0.85rem; color: #34d399; font-weight: 700; }
     .btn-quick-add {
       width: 100%;
       background: rgba(16, 185, 129, 0.12);
@@ -111,43 +51,19 @@
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
     }
-
-    /* Main Order Form Cards */
     .card {
       background: var(--card-bg);
       border-radius: 18px;
       padding: 18px;
       margin-bottom: 16px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
     }
-    .card-title {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .card-title { font-size: 0.98rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .form-group { margin-bottom: 12px; }
     .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
-
-    label {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-
+    label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
     input, textarea, select {
       width: 100%;
       background: var(--card-inner);
@@ -157,14 +73,8 @@
       border-radius: 10px;
       font-size: 0.92rem;
       outline: none;
-      transition: border-color 0.2s;
     }
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--primary);
-    }
-
     textarea { resize: vertical; min-height: 65px; }
-
     .btn-submit {
       width: 100%;
       background: var(--primary);
@@ -175,43 +85,40 @@
       font-size: 1.05rem;
       font-weight: 800;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 5px 18px rgba(16, 185, 129, 0.4);
-      margin-top: 10px;
     }
-    .btn-submit:active { transform: scale(0.98); background: var(--primary-hover); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    #statusMessage {
+      text-align: center;
+      padding: 12px;
+      margin-top: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="shop-brand">
-      <img id="shopLogo" class="shop-logo" src="https://api.iconify.design/lucide:store.svg?color=%2310b981" alt="Logo">
-      <h1 id="shopName">የኮንዶሚኒየም ሱቅ</h1>
-    </div>
+    <h1>የኮንዶሚኒየም ሱቅ</h1>
     <p>የእለት ተእለት ፍላጎትዎን ይዘዙ፤ በደቂቃዎች ውስጥ እናደርሳለን!</p>
   </header>
 
   <div class="container">
-
-    <div class="section-title">🔥 ተወዳጅ የእለት ተእለት እቃዎች (ነክተው ይጨምሩ)</div>
+    <div class="section-title">🔥 ተወዳጅ እቃዎች (ነክተው ይጨምሩ)</div>
     <div class="product-grid" id="productGrid"></div>
 
     <form id="orderForm" onsubmit="handleOrder(event)">
-
       <div class="card">
         <div class="card-title">📝 የሚፈልጉት እቃ ዝርዝር</div>
         <div class="form-group">
-          <label>የሚፈልጉት እቃ (ከላይ ሲነኩ እዚህ ይገባል ወይም በራስዎ ይጻፉ)</label>
+          <label>የሚፈልጉት እቃ</label>
           <textarea id="items" placeholder="ለምሳሌ፦ 10 እንጀራ፣ 1 ኪሎ ምስር..." required></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>ጠቅላላ ብዛት</label>
-            <input type="text" id="quantity" placeholder="ምሳሌ፦ 10 ፍሬ / 2 ፓኬት" required>
+            <input type="text" id="quantity" placeholder="ምሳሌ፦ 10 ፍሬ" required>
           </div>
           <div class="form-group">
             <label>የተገመተ ዋጋ (ብር)</label>
@@ -251,10 +158,8 @@
             <option value="በ1 ሰዓት ውስጥ">በ1 ሰዓት ውስጥ</option>
             <option value="ከሰዓት (ከቀኑ 8:00 - 10:00)">ከሰዓት (ከቀኑ 8:00 - 10:00)</option>
             <option value="ምሽት (ከምሽቱ 12:00 - 2:00)">ምሽት (ከምሽቱ 12:00 - 2:00)</option>
-            <option value="ነገ ጠዋት (ከጠዋቱ 1:00 - 3:00)">ነገ ጠዋት (ከጠዋቱ 1:00 - 3:00)</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>በምን ይከፍላሉ?</label>
           <select id="paymentMethod" required>
@@ -263,29 +168,22 @@
             <option value="እጅ በእጅ (Cash on Delivery)">እጅ በእጅ (Cash on Delivery)</option>
           </select>
         </div>
-
         <div class="form-group">
-          <label>ተጨማሪ አስተያየት (ካለዎት)</label>
+          <label>ተጨማሪ አስተያየት</label>
           <input type="text" id="notes" placeholder="ምሳሌ፦ ካውንተር ጋር ደውሉልኝ...">
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">
-        <span>ትዕዛዙን በቴሌግራም ላክ</span> 🚀
-      </button>
-
+      <button type="submit" class="btn-submit" id="submitBtn">ትዕዛዙን ላክ 🚀</button>
+      <div id="statusMessage"></div>
     </form>
   </div>
 
   <script>
-    const SHOP_CONFIG = {
-      name: "የኮንዶሚኒየም ሱቅ",
-      logoUrl: "https://api.iconify.design/lucide:store.svg?color=%2310b981",
-      telegramUsername: "my_condo_delivery_bot"
+    const CONFIG = {
+      botToken: "8516306659:AAFh9eIW6Kw6jb7j-okK-SjfqGlBNla_3eM",
+      chatId: "1230396565"
     };
-
-    document.getElementById('shopName').innerText = SHOP_CONFIG.name;
-    document.getElementById('shopLogo').src = SHOP_CONFIG.logoUrl;
 
     const dailyItems = [
       { name: "እንጀራ", price: "30 ብር", icon: "🫓" },
@@ -296,15 +194,11 @@
       { name: "ከሰል", price: "600 ብር", icon: "🪵" },
       { name: "ምስር", price: "380 ብር", icon: "🍲" },
       { name: "ዳይፐር", price: "600 ብር", icon: "👶" },
-      { name: "ሳሙና", price: "100-250 ብር", icon: "🧼" },
-      { name: "የገላ ሳሙና", price: "100-300 ብር", icon: "🚿" },
-      { name: "ሽቶ", price: "750-1200 ብር", icon: "✨" },
-      { name: "ደብተር", price: "60-100 ብር", icon: "📓" },
-      { name: "ቸኮሌት", price: "50-150 ብር", icon: "🍫" }
+      { name: "ሳሙና", price: "100-250 ብር", icon: "🧼" }
     ];
 
     const grid = document.getElementById('productGrid');
-    grid.innerHTML = dailyItems.map((item, index) => `
+    grid.innerHTML = dailyItems.map(item => `
       <div class="product-card">
         <div class="product-top">
           <div class="product-icon">${item.icon}</div>
@@ -321,17 +215,15 @@
 
     function quickAddItem(name, price) {
       const itemsInput = document.getElementById('items');
-      if (itemsInput.value.trim() === "") {
-        itemsInput.value = `${name} (${price})`;
-      } else {
-        itemsInput.value += `፣ ${name} (${price})`;
-      }
+      itemsInput.value = itemsInput.value ? `${itemsInput.value}፣ ${name} (${price})` : `${name} (${price})`;
       itemsInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
       itemsInput.focus();
     }
 
-    function handleOrder(e) {
+    async function handleOrder(e) {
       e.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      const statusMsg = document.getElementById('statusMessage');
 
       const items = document.getElementById('items').value.trim();
       const quantity = document.getElementById('quantity').value.trim();
@@ -344,19 +236,48 @@
       const paymentMethod = document.getElementById('paymentMethod').value;
       const notes = document.getElementById('notes').value.trim();
 
-      let orderSummary = `አዲስ_ትዕዛዝ__ዕቃ_${items}__ብዛት_${quantity}__ዋጋ_${price}__አድራሻ_ብሎክ${block}_ደረጃ${floor}_ቤት${houseNo}__ስልክ_${phone}__ሰዓት_${deliveryTime}__ክፍያ_${paymentMethod}`;
-      if (notes) {
-        orderSummary += `__ማስታወሻ_${notes}`;
+      submitBtn.disabled = true;
+      submitBtn.innerText = "በመላክ ላይ... ⏳";
+
+      let text = `🛒 *አዲስ ትዕዛዝ ደርሶዎታል!*\n\n`;
+      text += `📦 *እቃ:* ${items}\n`;
+      text += `🔢 *ብዛት:* ${quantity}\n`;
+      text += `💰 *ዋጋ:* ${price}\n\n`;
+      text += `📍 *አድራሻ:*\n• ብሎክ: ${block}\n• ደረጃ: ${floor}\n• የቤት ቁጥር: ${houseNo}\n`;
+      text += `📞 *ስልክ:* ${phone}\n\n`;
+      text += `⏰ *የሚደርስበት ሰዓት:* ${deliveryTime}\n`;
+      text += `💳 *የክፍያ መንገድ:* ${paymentMethod}\n`;
+      if (notes) text += `💬 *ማስታወሻ:* ${notes}\n`;
+
+      try {
+        const response = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: CONFIG.chatId,
+            text: text,
+            parse_mode: 'Markdown'
+          })
+        });
+
+        if (response.ok) {
+          statusMsg.style.display = "block";
+          statusMsg.style.background = "#065f46";
+          statusMsg.style.color = "#6ee7b7";
+          statusMsg.innerText = "✅ ትዕዛዝዎ በተሳካ ሁኔታ ተልኳል! በደቂቃዎች ውስጥ ይደርስዎታል።";
+          document.getElementById('orderForm').reset();
+        } else {
+          throw new Error('Send failed');
+        }
+      } catch (err) {
+        statusMsg.style.display = "block";
+        statusMsg.style.background = "#7f1d1d";
+        statusMsg.style.color = "#fca5a5";
+        statusMsg.innerText = "❌ ትዕዛዙ አልተላከም፤ እባክዎ ኢንተርኔትዎን ይፈትሹ።";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "ትዕዛዙን ላክ 🚀";
       }
-
-      // ክፍተቶችንና ልዩ ምልክቶችን ለሊንክ በሚመች መልኩ ማስተካከል
-      const cleanParam = encodeURIComponent(orderSummary.replace(/\s+/g, '_'));
-
-      // ብሮውዘርም ሆነ ስልክ በቀጥታ እንዲከፍተው የሚሰራ ዩአርኤል
-      const telegramUrl = `https://telegram.me/${SHOP_CONFIG.telegramUsername}?start=${cleanParam}`;
-
-      // በ Chrome ወይም ውጫዊ ብሮውዘር ላይ መክፈት
-      window.location.href = telegramUrl;
     }
   </script>
 </body>
