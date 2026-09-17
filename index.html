@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>የኮንዶሚኒየም የሰፈር ሱቅ - ማዘዣ</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #10b981;
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #e2e8f0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 90px;
+    }
+    .store-banner {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      padding: 20px 16px;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .store-banner h1 {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+    .store-banner p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    .container {
+      padding: 16px;
+    }
+    .search-bar {
+      margin-top: -14px;
+      background: white;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-bar input {
+      border: none;
+      width: 100%;
+      outline: none;
+      font-size: 0.95rem;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 20px 0 12px 0;
+      color: #334155;
+    }
+    .item-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .item-card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+    .item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .item-price {
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 1.05rem;
+    }
+    .item-cat {
+      font-size: 0.75rem;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+    .add-btn {
+      background: #eff6ff;
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .add-btn:active {
+      background: var(--primary);
+      color: white;
+    }
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 12px 16px;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+    .cart-summary h4 {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+    .cart-summary p {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: var(--text);
+    }
+    .order-btn {
+      background: var(--accent);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      align-items: flex-end;
+      z-index: 99;
+    }
+    .modal-content {
+      background: white;
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="store-banner">
+    <h1 id="shopTitle">🏬 ኮንዶሚኒየም ሱቅ 2</h1>
+    <p>ብሎክ 08 | እስከ ደጃፍዎ እናደርሳለን</p>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="custSearch" placeholder="እቃዎችን እዚህ ይፈልጉ..." onkeyup="filterItems()">
+    </div>
+
+    <h2 class="section-title">የሱቁ እቃዎች ዝርዝር</h2>
+    <div id="itemList" class="item-grid"></div>
+  </div>
+
+  <div class="cart-bar" id="cartBar" style="display: none;">
+    <div class="cart-summary">
+      <h4 id="cartCount">0 እቃዎች ተመርጠዋል</h4>
+      <p id="cartTotal">0.00 ብር</p>
+    </div>
+    <button class="order-btn" onclick="openCheckout()">እዘዝ 🚀</button>
+  </div>
+
+  <div class="modal" id="orderModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 1.1rem;">የማድረሻ አድራሻ መረጃ</h3>
+        <button onclick="closeCheckout()" style="border:none; background:none; font-size: 1.2rem; cursor:pointer;">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>የእርስዎ ስም *</label>
+        <input type="text" id="custName" placeholder="ስም ያስገቡ">
+      </div>
+
+      <div class="form-group">
+        <label>ብሎክ ቁጥር *</label>
+        <input type="text" id="custBlock" placeholder="ምሳሌ፡ ብሎክ 12">
+      </div>
+
+      <div class="form-group">
+        <label>የቤት ቁጥር / ፎቅ *</label>
+        <input type="text" id="custHouse" placeholder="ምሳሌ፡ 3ኛ ፎቅ፣ ቤት ቁጥር 304">
+      </div>
+
+      <div class="form-group">
+        <label>ስልክ ቁጥር *</label>
+        <input type="tel" id="custPhone" placeholder="09...">
+      </div>
+
+      <div class="form-group">
+        <label>የክፍያ አይነት</label>
+        <select id="paymentType">
+          <option value="በቴሌብር / ባንክ ሂሳብ">በቴሌብር / ሲቢኢ ብር</option>
+          <option value="እቃው ሲደርስ በጥሬ ገንዘብ">እቃው ሲደርስ በጥሬ ገንዘብ</option>
+        </select>
+      </div>
+
+      <button class="order-btn" style="width: 100%; margin-top: 10px;" onclick="submitOrder()">ትዕዛዙን ላክ</button>
+    </div>
+  </div>
+
+  <script>
+    // የባለሱቁ ቴሌግራም ዩዘርኔም ያለ @ (ምሳሌ፦ abebe_shop)
+    const SHOP_TELEGRAM_USERNAME = "YourShopTelegramUsername"; 
+    let cart = {};
+
+    const defaultItems = [
+      // አትክልትና ፍራፍሬ
+      { id: '1', name: 'ቀይ ሽንኩርት 1 ኪሎ', category: 'አትክልትና ፍራፍሬ', price: 90 },
+      { id: '2', name: 'ነጭ ሽንኩርት 250 ግራም', category: 'አትክልትና ፍራፍሬ', price: 60 },
+      { id: '3', name: 'ቲማቲም 1 ኪሎ', category: 'አትክልትና ፍራፍሬ', price: 70 },
+      { id: '4', name: 'ድንች 1 ኪሎ', category: 'አትክልትና ፍራፍሬ', price: 45 },
+      { id: '5', name: 'ቃሪያ (በቁጥር/ክምር)', category: 'አትክልትና ፍራፍሬ', price: 20 },
+      { id: '6', name: 'ዝንጅብል 250 ግራም', category: 'አትክልትና ፍራፍሬ', price: 40 },
+
+      // የበልተና ውጤቶችና ቅመማ ቅመም
+      { id: '7', name: 'የወጥ በርበሬ (የተዘጋጀ) 1 ኪሎ', category: 'የበልተና እና ቅመማ ቅመም', price: 380 },
+      { id: '8', name: 'የሽሮ ዱቄት (ሚጥን) 1 ኪሎ', category: 'የበልተና እና ቅመማ ቅመም', price: 260 },
+      { id: '9', name: 'የሽሮ ዱቄት (ነጭ/የአተር) 1 ኪሎ', category: 'የበልተና እና ቅመማ ቅመም', price: 220 },
+      { id: '10', name: 'ሚጥሚጣ (የተፈጨ) 250 ግራም', category: 'የበልተና እና ቅመማ ቅመም', price: 90 },
+      { id: '11', name: 'እርድ (የታሸገ)', category: 'የበልተና እና ቅመማ ቅመም', price: 40 },
+      { id: '12', name: 'ኮረሪማ (የተፈጨ)', category: 'የበልተና እና ቅመማ ቅመም', price: 70 },
+      { id: '13', name: 'መከለሻ ቅመም', category: 'የበልተና እና ቅመማ ቅመም', price: 50 },
+
+      // ጥራጥሬ እና የኩሽና እቃዎች
+      { id: '14', name: 'ምስር (ክክ) 1 ኪሎ', category: 'የምግብ እቃዎች', price: 190 },
+      { id: '15', name: 'አተር (ክክ) 1 ኪሎ', category: 'የምግብ እቃዎች', price: 140 },
+      { id: '16', name: 'ሩዝ 1 ኪሎ', category: 'የምግብ እቃዎች', price: 120 },
+      { id: '17', name: 'ስኳር 1 ኪሎ', category: 'የምግብ እቃዎች', price: 130 },
+      { id: '18', name: 'ጨው (አዮዲን የታሸገ)', category: 'የምግብ እቃዎች', price: 35 },
+      { id: '19', name: 'የሱፍ ዘይት 5 ሊትር', category: 'የምግብ እቃዎች', price: 950 },
+      { id: '20', name: 'የሱፍ ዘይት 1 ሊትር', category: 'የምግብ እቃዎች', price: 220 },
+      { id: '21', name: 'ፓስታ (አልታዲያ)', category: 'የምግብ እቃዎች', price: 75 },
+      { id: '22', name: 'ማኮሮኒ', category: 'የምግብ እቃዎች', price: 70 },
+      { id: '23', name: 'የቲማቲም ድልህ (ቆርቆሮ)', category: 'የምግብ እቃዎች', price: 85 },
+
+      // የዕለት ተዕለት ፍጆታዎች
+      { id: '24', name: 'እንጀራ (1 ፍሬ)', category: 'የዕለት ተዕለት', price: 20 },
+      { id: '25', name: 'ዳቦ (1 ፍሬ)', category: 'የዕለት ተዕለት', price: 15 },
+      { id: '26', name: 'እንቁላል (1 ፍሬ)', category: 'የዕለት ተዕለት', price: 23 },
+      { id: '27', name: 'ሻማ (1 ፓኬት)', category: 'የዕለት ተዕለት', price: 120 },
+      { id: '28', name: 'ክብሪት', category: 'የዕለት ተዕለት', price: 10 },
+      { id: '29', name: 'ዋና ሻይ ቅጠል', category: 'የዕለት ተዕለት', price: 45 },
+
+      // ውሃ እና ለስላሳ መጠጦች
+      { id: '30', name: 'ጃኖ የታሸገ ውሃ 2 ሊትር', category: 'ለስላሳ እና ውሃ', price: 50 },
+      { id: '31', name: 'ጃኖ የታሸገ ውሃ 1 ሊትር', category: 'ለስላሳ እና ውሃ', price: 35 },
+      { id: '32', name: 'ጃኖ የታሸገ ውሃ 0.5 ሊትር', category: 'ለስላሳ እና ውሃ', price: 25 },
+      { id: '33', name: 'ኮካ / ፋንታ / ስፕራይት', category: 'ለስላሳ እና ውሃ', price: 50 },
+      { id: '34', name: 'አምቦ ውሃ (ጠርሙስ)', category: 'ለስላሳ እና ውሃ', price: 40 },
+
+      // ቢራ እና መጠጦች
+      { id: '35', name: 'ሀበሻ ቢራ', category: 'ቢራ እና መጠጦች', price: 75 },
+      { id: '36', name: 'ቅዱስ ጊዮርጊስ ቢራ', category: 'ቢራ እና መጠጦች', price: 75 },
+      { id: '37', name: 'ዋልያ ቢራ', category: 'ቢራ እና መጠጦች', price: 75 },
+      { id: '38', name: 'ዳሽን ቢራ', category: 'ቢራ እና መጠጦች', price: 70 },
+      { id: '39', name: 'ሀይኒከን (Heineken)', category: 'ቢራ እና መጠጦች', price: 95 },
+
+      // የንፅህና መጠበቂያ
+      { id: '40', name: 'ቢ29 የልብስ ሳሙና', category: 'የንፅህና መጠበቂያ', price: 55 },
+      { id: '41', name: 'የገላ ሳሙና (ላይፍቦይ)', category: 'የንፅህና መጠበቂያ', price: 65 },
+      { id: '42', name: 'ኦሞ 500 ግራም', category: 'የንፅህና መጠበቂያ', price: 140 },
+      { id: '43', name: 'ሶፍት (ሮል)', category: 'የንፅህና መጠበቂያ', price: 40 },
+      { id: '44', name: 'ሞዴስ (ሳኒታሪ ፓድ)', category: 'የንፅህና መጠበቂያ', price: 110 },
+      { id: '45', name: 'በረኪና 1 ሊትር', category: 'የንፅህና መጠበቂያ', price: 60 },
+
+      // የህፃናት እቃዎች
+      { id: '46', name: 'ዳይፐር ቁጥር 3 (ትልቅ)', category: 'የህፃናት እቃዎች', price: 850 },
+      { id: '47', name: 'ዳይፐር ቁጥር 2 (መካከለኛ)', category: 'የህፃናት እቃዎች', price: 800 },
+      { id: '48', name: 'ሴሪላክ 400 ግራም', category: 'የህፃናት እቃዎች', price: 650 }
+    ];
+
+    function renderItems() {
+      const search = document.getElementById('custSearch').value.toLowerCase();
+      const list = document.getElementById('itemList');
+
+      const filtered = defaultItems.filter(it => 
+        it.name.toLowerCase().includes(search) || 
+        it.category.toLowerCase().includes(search)
+      );
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<p style="color:#94a3b8; text-align:center; padding: 20px;">ምንም እቃ አልተገኘም</p>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(item => `
+        <div class="item-card">
+          <div>
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">${item.price.toFixed(2)} ብር</div>
+            <span class="item-cat">${item.category}</span>
+          </div>
+          <div>
+            <button class="add-btn" onclick="addToCart('${item.id}', '${item.name}', ${item.price})">+ ጨምር</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(id, name, price) {
+      if (cart[id]) {
+        cart[id].qty += 1;
+      } else {
+        cart[id] = { name, price, qty: 1 };
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartBar = document.getElementById('cartBar');
+      const cartCount = document.getElementById('cartCount');
+      const cartTotal = document.getElementById('cartTotal');
+
+      const keys = Object.keys(cart);
+      if (keys.length === 0) {
+        cartBar.style.display = 'none';
+        return;
+      }
+
+      let total = 0;
+      let count = 0;
+      keys.forEach(k => {
+        total += cart[k].price * cart[k].qty;
+        count += cart[k].qty;
+      });
+
+      cartCount.textContent = `${count} እቃዎች ተመርጠዋል`;
+      cartTotal.textContent = `${total.toFixed(2)} ብር`;
+      cartBar.style.display = 'flex';
+    }
+
+    function filterItems() {
+      renderItems();
+    }
+
+    function openCheckout() {
+      document.getElementById('orderModal').style.display = 'flex';
+    }
+
+    function closeCheckout() {
+      document.getElementById('orderModal').style.display = 'none';
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('custName').value.trim();
+      const block = document.getElementById('custBlock').value.trim();
+      const house = document.getElementById('custHouse').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const pay = document.getElementById('paymentType').value;
+
+      if (!name || !block || !house || !phone) {
+        alert('እባክዎ ሁሉንም መረጃዎች በትክክል ይሙሉ!');
+        return;
+      }
+
+      let message = `🛒 *አዲስ የሱቅ ትዕዛዝ!*\n\n`;
+      message += `👤 *ደንበኛ:* ${name}\n`;
+      message += `🏢 *ብሎክ:* ${block}\n`;
+      message += `🚪 *ቤት ቁጥር/ፎቅ:* ${house}\n`;
+      message += `📞 *ስልክ:* ${phone}\n`;
+      message += `💳 *የክፍያ ዘዴ:* ${pay}\n`;
+      message += `-----------------------------\n`;
+      message += `📦 *የታዘዙ ዕቃዎች:*\n`;
+
+      let total = 0;
+      Object.keys(cart).forEach(id => {
+        const it = cart[id];
+        const sub = it.price * it.qty;
+        total += sub;
+        message += `• ${it.name} (${it.qty}x) = ${sub} ብር\n`;
+      });
+
+      message += `-----------------------------\n`;
+      message += `💰 *ጠቅላላ የሚከፈል:* ${total.toFixed(2)} ብር\n\n`;
+      message += `_እባክዎ ትዕዛዙን ያረጋግጡልኝ!_`;
+
+      const encodedMsg = encodeURIComponent(message);
+      const telegramUrl = `https://t.me/${SHOP_TELEGRAM_USERNAME}?text=${encodedMsg}`;
+
+      window.open(telegramUrl, '_blank');
+
+      closeCheckout();
+      cart = {};
+      updateCartUI();
+    }
+
+    window.onload = renderItems;
+  </script>
+</body>
+</html>
