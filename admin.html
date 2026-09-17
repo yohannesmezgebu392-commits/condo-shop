@@ -1,539 +1,360 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="am">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>የሱቅ አስተዳዳሪና የሂሳብ መቆጣጠሪያ</title>
+  <title>የሱቅ አስተዳዳሪ | ወጪ፣ ቀሪ እና እቃዎች</title>
   <style>
     :root {
       --primary: #10b981;
-      --primary-dark: #059669;
-      --accent: #2563eb;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --border: #e2e8f0;
       --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-inner: #0b1329;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 60px; }
+
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 16px;
+      text-align: center;
     }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 12px;
-      padding-bottom: 50px;
-    }
-    .header {
-      background: var(--card-bg);
-      padding: 14px;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      margin-bottom: 14px;
-    }
-    .shop-select {
-      margin-top: 8px;
-      display: flex;
+    header h1 { font-size: 1.25rem; color: var(--primary); }
+    header p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+    .container { max-width: 540px; margin: 0 auto; padding: 14px; }
+
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
+      margin-bottom: 20px;
     }
+    .summary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .summary-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; }
+    .summary-val { font-size: 1.05rem; font-weight: 800; }
+    .val-income { color: #34d399; }
+    .val-expense { color: #f87171; }
+    .val-balance { color: #38bdf8; }
+
+    /* Tabs */
     .tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
+      background: var(--card-inner);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
     }
     .tab-btn {
       flex: 1;
-      padding: 12px;
+      background: none;
       border: none;
-      background: #e2e8f0;
-      color: #475569;
+      color: var(--text-muted);
+      padding: 10px;
       font-weight: 700;
-      border-radius: 10px;
+      font-size: 0.85rem;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 0.9rem;
+      transition: 0.2s;
     }
     .tab-btn.active {
       background: var(--primary);
       color: white;
     }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Card & Forms */
     .card {
       background: var(--card-bg);
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      margin-bottom: 14px;
-    }
-    .card h3 {
-      margin-bottom: 12px;
-      font-size: 1.05rem;
-      color: #334155;
-    }
-    .form-group {
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .form-group label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #64748b;
-    }
-    input, select, button {
-      padding: 10px;
-      border-radius: 8px;
       border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .card-title {
       font-size: 0.95rem;
-      outline: none;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 4px; }
+    input, select {
       width: 100%;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      outline: none;
     }
-    input:focus, select:focus {
-      border-color: var(--primary);
-    }
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    input:focus, select:focus { border-color: var(--primary); }
+
     .btn {
+      width: 100%;
       background: var(--primary);
       color: white;
       border: none;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 6px;
-    }
-    .btn-danger {
-      background: #fee2e2;
-      color: var(--danger);
-      border: 1px solid #fecaca;
-      width: auto;
-      padding: 6px 10px;
-      font-size: 0.8rem;
-    }
-    .btn-edit {
-      background: #3b82f6;
-      color: white;
-      border: none;
-      width: auto;
-      padding: 6px 10px;
-      font-size: 0.8rem;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
       cursor: pointer;
     }
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .kpi-card {
-      padding: 14px;
-      border-radius: 12px;
-      text-align: center;
-    }
-    .kpi-title { font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
-    .kpi-val { font-size: 1.2rem; font-weight: 800; }
-    .bg-green { background: #dcfce7; color: #15803d; }
-    .bg-red { background: #fee2e2; color: #b91c1c; }
-    .bg-blue { background: #dbeafe; color: #1d4ed8; }
-    .bg-purple { background: #f3e8ff; color: #7e22ce; }
+    .btn-danger { background: var(--danger); }
 
-    .product-item {
+    /* List Display */
+    .item-list { list-style: none; margin-top: 10px; }
+    .list-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      justify-content: space-between;
+      background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
       margin-bottom: 8px;
-      background: #fff;
     }
-    .prod-sub { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
-    .badge {
-      display: inline-block;
-      padding: 2px 6px;
+    .row-info h4 { font-size: 0.88rem; font-weight: 700; }
+    .row-info p { font-size: 0.75rem; color: var(--text-muted); }
+    .row-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-del {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 0.72rem;
-      background: #e2e8f0;
-      color: #334155;
+      cursor: pointer;
+      font-size: 0.75rem;
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div style="font-weight: 800; font-size: 1.1rem; color: var(--primary-dark);">🏪 የሱቅ ስራ ማቅለያ ሲስተም</div>
-    <div class="shop-select">
-      <select id="currentStore" onchange="switchStore()">
-        <option value="shop_01">ሱቅ 1 (ብሎክ 12 - አቶ ከበደ)</option>
-        <option value="shop_02">ሱቅ 2 (ብሎክ 08 - ወ/ሮ አልማዝ)</option>
-      </select>
-    </div>
+  <header>
+    <h1>⚙️ የሱቅ አስተዳዳሪ ፓነል</h1>
+    <p>የዕለቱ ሽያጭ፣ ወጪዎች እና የዕቃ ዝርዝር መቆጣጠሪያ</p>
   </header>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('inventoryTab')">📦 የእቃ መዝገብ</button>
-    <button class="tab-btn" onclick="switchTab('financeTab')">📊 የቀን ሂሳብና ትርፍ</button>
-  </div>
+  <div class="container">
 
-  <!-- TAB 1: INVENTORY -->
-  <div id="inventoryTab" class="tab-content active">
-    <section class="card">
-      <h3>➕ አዲስ እቃ መመዝገቢያ</h3>
-      <form id="productForm" onsubmit="saveProduct(event)">
-        <div class="form-group">
-          <label>የዕቃው ስም *</label>
-          <input type="text" id="pName" placeholder="ምሳሌ፡ ቢ29፣ ፀሀይ ዘይት" required>
-        </div>
-
-        <div class="row-2">
-          <div class="form-group">
-            <label>ዋና ምድብ (Category)</label>
-            <select id="pCategory">
-              <option value="አትክልትና ፍራፍሬ">አትክልትና ፍራፍሬ</option>
-              <option value="የበልተና እና ቅመማ ቅመም">የበልተና እና ቅመማ ቅመም</option>
-              <option value="የምግብ እቃዎች">የምግብ እቃዎች</option>
-              <option value="የዕለት ተዕለት">የዕለት ተዕለት (እንጀራ/ዳቦ)</option>
-              <option value="ለስላሳ እና ውሃ">ለስላሳ እና ውሃ</option>
-              <option value="ቢራ እና መጠጦች">ቢራ እና መጠጦች</option>
-              <option value="የንፅህና መጠበቂያ">የንፅህና መጠበቂያ</option>
-              <option value="የህፃናት እቃዎች">የህፃናት እቃዎች</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>የዕቃው አይነት (ንዑስ ምድብ)</label>
-            <input type="text" id="pSubType" placeholder="ምሳሌ፡ የልብስ ሳሙና፣ የጥርስ...">
-          </div>
-        </div>
-
-        <div class="row-2">
-          <div class="form-group">
-            <label>የመግዣ ዋጋ (ብር) *</label>
-            <input type="number" id="pBuyPrice" step="0.5" placeholder="በስንት ገዙት?" required>
-          </div>
-          <div class="form-group">
-            <label>የመሸጫ ዋጋ (ብር) *</label>
-            <input type="number" id="pSellPrice" step="0.5" placeholder="በስንት ይሸጣሉ?" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>ያለ ብዛት (Stock Quantity)</label>
-          <input type="number" id="pStock" placeholder="ብዛት" value="10">
-        </div>
-
-        <button type="submit" class="btn">እቃውን መዝግብ</button>
-      </form>
-    </section>
-
-    <section class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <h3>የተመዘገቡ እቃዎች</h3>
-        <span id="prodCountBadge" class="badge">0 እቃዎች</span>
+    <!-- Overview Stats -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-title">ጠቅላላ ሽያጭ (ገቢ)</div>
+        <div class="summary-val val-income" id="totalIncome">0 ብር</div>
       </div>
-      <input type="text" id="searchProd" placeholder="🔍 እቃ ፈልግ..." onkeyup="renderProducts()" style="margin-bottom: 12px;">
-      <div id="productsContainer"></div>
-    </section>
-  </div>
-
-  <!-- TAB 2: FINANCE -->
-  <div id="financeTab" class="tab-content">
-    <div class="kpi-grid">
-      <div class="kpi-card bg-blue">
-        <div class="kpi-title">የቀን ጠቅላላ ሽያጭ (ገቢ)</div>
-        <div class="kpi-val" id="kpiIncome">0.00 ብር</div>
+      <div class="summary-card">
+        <div class="summary-title">ጠቅላላ ወጪ</div>
+        <div class="summary-val val-expense" id="totalExpense">0 ብር</div>
       </div>
-      <div class="kpi-card bg-red">
-        <div class="kpi-title">የቀን ጠቅላላ ወጪ</div>
-        <div class="kpi-val" id="kpiExpense">0.00 ብር</div>
-      </div>
-      <div class="kpi-card bg-green">
-        <div class="kpi-title">የቀኑ የተጣራ ትርፍ</div>
-        <div class="kpi-val" id="kpiNetProfit">0.00 ብር</div>
-      </div>
-      <div class="kpi-card bg-purple">
-        <div class="kpi-title">የግብይት ብዛት</div>
-        <div class="kpi-val" id="kpiTxCount">0</div>
+      <div class="summary-card">
+        <div class="summary-title">ቀሪ ጥሬ ገንዘብ</div>
+        <div class="summary-val val-balance" id="netBalance">0 ብር</div>
       </div>
     </div>
 
-    <section class="card">
-      <h3>📝 የቀን እንቅስቃሴ መዝግብ</h3>
-      <form id="financeForm" onsubmit="saveTransaction(event)">
-        <div class="row-2">
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('cashflow')">💰 ወጪ እና ገቢ</button>
+      <button class="tab-btn" onclick="switchTab('inventory')">📦 አዲስ ዕቃ መጨመሪያ</button>
+    </div>
+
+    <!-- TAB 1: CASHFLOW & EXPENSES -->
+    <div id="cashflow" class="tab-content active">
+      <div class="card">
+        <div class="card-title">➕ የገንዘብ እንቅስቃሴ መዝግብ</div>
+        <form id="cashForm" onsubmit="addCashRecord(event)">
           <div class="form-group">
-            <label>የእንቅስቃሴ አይነት</label>
-            <select id="txType">
-              <option value="ገቢ">ገቢ (የዕቃ ሽያጭ)</option>
-              <option value="ወጪ">ወጪ (ለሱቅ ጉዳይ የወጣ)</option>
+            <label>ዓይነት</label>
+            <select id="recordType">
+              <option value="expense">ወጪ (ለምሳሌ፡ ለጅምላ እቃ፣ ትራንስፖርት...)</option>
+              <option value="income">ገቢ (የዕለቱ ጥሬ ሽያጭ)</option>
             </select>
           </div>
           <div class="form-group">
-            <label>መጠን (ብር) *</label>
-            <input type="number" id="txAmount" step="1" placeholder="ብር" required>
+            <label>የገንዘብ መጠን (ብር)</label>
+            <input type="number" id="recordAmount" placeholder="ምሳሌ፦ 500" required>
           </div>
-        </div>
+          <div class="form-group">
+            <label>ምክንያት / ማብራሪያ</label>
+            <input type="text" id="recordDesc" placeholder="ምሳሌ፦ የዘይት እና ስኳር ግዢ" required>
+          </div>
+          <button type="submit" class="btn">መዝግብ</button>
+        </form>
+      </div>
 
-        <div class="form-group">
-          <label>ዝርዝር መግለጫ / ምክንያት *</label>
-          <input type="text" id="txDesc" placeholder="ምሳሌ፡ ለዳቦ አቅራቢ የተከፈለ፣ የቀን ሽያጭ..." required>
-        </div>
+      <div class="card">
+        <div class="card-title">📋 የቅርብ ጊዜ ወጪና ገቢ ታሪክ</div>
+        <ul class="item-list" id="recordsList"></ul>
+      </div>
+    </div>
 
-        <button type="submit" class="btn" style="background: var(--accent);">መዝግብ</button>
-      </form>
-    </section>
+    <!-- TAB 2: INVENTORY MANAGEMENT -->
+    <div id="inventory" class="tab-content">
+      <div class="card">
+        <div class="card-title">🛍️ አዲስ ዕቃ ወደ ሱቁ ጨምር</div>
+        <form id="itemForm" onsubmit="addNewProduct(event)">
+          <div class="form-group">
+            <label>የዕቃው ስም</label>
+            <input type="text" id="itemName" placeholder="ምሳሌ፦ የታሸገ ወተት" required>
+          </div>
+          <div class="form-group">
+            <label>ዋጋ (በብር)</label>
+            <input type="text" id="itemPrice" placeholder="ምሳሌ፦ 85 ብር" required>
+          </div>
+          <div class="form-group">
+            <label>ምልክት / ኢሞጂ (Icon)</label>
+            <input type="text" id="itemIcon" placeholder="ምሳሌ፦ 🥛 ወይም 🍞" value="📦">
+          </div>
+          <button type="submit" class="btn">ዕቃውን ጨምር</button>
+        </form>
+      </div>
 
-    <section class="card">
-      <h3>የዛሬ እንቅስቃሴዎች</h3>
-      <div id="txContainer"></div>
-    </section>
+      <div class="card">
+        <div class="card-title">📦 በሱቁ ውስጥ ያሉ ዕቃዎች</div>
+        <ul class="item-list" id="productsList"></ul>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    let currentShopId = 'shop_01';
-
-    // 48ቱ ዝግጁ እቃዎች
-    const seedCatalog = [
-      { id: '1', name: 'ቀይ ሽንኩርት 1 ኪሎ', category: 'አትክልትና ፍራፍሬ', subType: 'አትክልት', buyPrice: 75, sellPrice: 90, stock: 30 },
-      { id: '2', name: 'ነጭ ሽንኩርት 250 ግራም', category: 'አትክልትና ፍራፍሬ', subType: 'አትክልት', buyPrice: 45, sellPrice: 60, stock: 20 },
-      { id: '3', name: 'ቲማቲም 1 ኪሎ', category: 'አትክልትና ፍራፍሬ', subType: 'አትክልት', buyPrice: 55, sellPrice: 70, stock: 25 },
-      { id: '4', name: 'ድንች 1 ኪሎ', category: 'አትክልትና ፍራፍሬ', subType: 'አትክልት', buyPrice: 35, sellPrice: 45, stock: 40 },
-      { id: '5', name: 'ቃሪያ (በቁጥር/ክምር)', category: 'አትክልትና ፍራፍሬ', subType: 'አትክልት', buyPrice: 12, sellPrice: 20, stock: 50 },
-      { id: '6', name: 'ዝንጅብል 250 ግራም', category: 'አትክልትና ፍራፍሬ', subType: 'አትክልት', buyPrice: 30, sellPrice: 40, stock: 15 },
-      { id: '7', name: 'የወጥ በርበሬ 1 ኪሎ', category: 'የበልተና እና ቅመማ ቅመም', subType: 'በርበሬ', buyPrice: 330, sellPrice: 380, stock: 10 },
-      { id: '8', name: 'የሽሮ ዱቄት (ሚጥን) 1 ኪሎ', category: 'የበልተና እና ቅመማ ቅመም', subType: 'ሽሮ', buyPrice: 220, sellPrice: 260, stock: 15 },
-      { id: '9', name: 'የሽሮ ዱቄት (ነጭ) 1 ኪሎ', category: 'የበልተና እና ቅመማ ቅመም', subType: 'ሽሮ', buyPrice: 180, sellPrice: 220, stock: 12 },
-      { id: '10', name: 'ሚጥሚጣ 250 ግራም', category: 'የበልተና እና ቅመማ ቅመም', subType: 'ቅመም', buyPrice: 70, sellPrice: 90, stock: 20 },
-      { id: '11', name: 'እርድ (የታሸገ)', category: 'የበልተና እና ቅመማ ቅመም', subType: 'ቅመም', buyPrice: 28, sellPrice: 40, stock: 30 },
-      { id: '12', name: 'ኮረሪማ (የተፈጨ)', category: 'የበልተና እና ቅመማ ቅመም', subType: 'ቅመም', buyPrice: 50, sellPrice: 70, stock: 15 },
-      { id: '13', name: 'መከለሻ ቅመም', category: 'የበልተና እና ቅመማ ቅመም', subType: 'ቅመም', buyPrice: 35, sellPrice: 50, stock: 20 },
-      { id: '14', name: 'ምስር (ክክ) 1 ኪሎ', category: 'የምግብ እቃዎች', subType: 'ጥራጥሬ', buyPrice: 165, sellPrice: 190, stock: 25 },
-      { id: '15', name: 'አተር (ክክ) 1 ኪሎ', category: 'የምግብ እቃዎች', subType: 'ጥራጥሬ', buyPrice: 115, sellPrice: 140, stock: 20 },
-      { id: '16', name: 'ሩዝ 1 ኪሎ', category: 'የምግብ እቃዎች', subType: 'እህል', buyPrice: 100, sellPrice: 120, stock: 30 },
-      { id: '17', name: 'ስኳር 1 ኪሎ', category: 'የምግብ እቃዎች', subType: 'ስኳር', buyPrice: 110, sellPrice: 130, stock: 50 },
-      { id: '18', name: 'ጨው (አዮዲን የታሸገ)', category: 'የምግብ እቃዎች', subType: 'ጨው', buyPrice: 25, sellPrice: 35, stock: 40 },
-      { id: '19', name: 'የሱፍ ዘይት 5 ሊትር', category: 'የምግብ እቃዎች', subType: 'ዘይት', buyPrice: 880, sellPrice: 950, stock: 15 },
-      { id: '20', name: 'የሱፍ ዘይት 1 ሊትር', category: 'የምግብ እቃዎች', subType: 'ዘይት', buyPrice: 195, sellPrice: 220, stock: 25 },
-      { id: '21', name: 'ፓስታ (አልታዲያ)', category: 'የምግብ እቃዎች', subType: 'ፓስታ', buyPrice: 62, sellPrice: 75, stock: 60 },
-      { id: '22', name: 'ማኮሮኒ', category: 'የምግብ እቃዎች', subType: 'ማኮሮኒ', buyPrice: 58, sellPrice: 70, stock: 40 },
-      { id: '23', name: 'የቲማቲም ድልህ (ቆርቆሮ)', category: 'የምግብ እቃዎች', subType: 'ድልህ', buyPrice: 68, sellPrice: 85, stock: 35 },
-      { id: '24', name: 'እንጀራ (1 ፍሬ)', category: 'የዕለት ተዕለት', subType: 'እንጀራ', buyPrice: 16, sellPrice: 20, stock: 80 },
-      { id: '25', name: 'ዳቦ (1 ፍሬ)', category: 'የዕለት ተዕለት', subType: 'ዳቦ', buyPrice: 12, sellPrice: 15, stock: 100 },
-      { id: '26', name: 'እንቁላል (1 ፍሬ)', category: 'የዕለት ተዕለት', subType: 'እንቁላል', buyPrice: 19, sellPrice: 23, stock: 120 },
-      { id: '27', name: 'ሻማ (1 ፓኬት)', category: 'የዕለት ተዕለት', subType: 'ሻማ', buyPrice: 95, sellPrice: 120, stock: 20 },
-      { id: '28', name: 'ክብሪት', category: 'የዕለት ተዕለት', subType: 'ክብሪት', buyPrice: 6, sellPrice: 10, stock: 50 },
-      { id: '29', name: 'ዋና ሻይ ቅጠል', category: 'የዕለት ተዕለት', subType: 'ሻይ', buyPrice: 34, sellPrice: 45, stock: 30 },
-      { id: '30', name: 'ጃኖ የታሸገ ውሃ 2 ሊትር', category: 'ለስላሳ እና ውሃ', subType: 'ውሃ', buyPrice: 38, sellPrice: 50, stock: 40 },
-      { id: '31', name: 'ጃኖ የታሸገ ውሃ 1 ሊትር', category: 'ለስላሳ እና ውሃ', subType: 'ውሃ', buyPrice: 26, sellPrice: 35, stock: 40 },
-      { id: '32', name: 'ጃኖ የታሸገ ውሃ 0.5 ሊትር', category: 'ለስላሳ እና ውሃ', subType: 'ውሃ', buyPrice: 18, sellPrice: 25, stock: 60 },
-      { id: '33', name: 'ኮካ / ፋንታ / ስፕራይት', category: 'ለስላሳ እና ውሃ', subType: 'ለስላሳ', buyPrice: 38, sellPrice: 50, stock: 70 },
-      { id: '34', name: 'አምቦ ውሃ (ጠርሙስ)', category: 'ለስላሳ እና ውሃ', subType: 'ውሃ', buyPrice: 30, sellPrice: 40, stock: 50 },
-      { id: '35', name: 'ሀበሻ ቢራ', category: 'ቢራ እና መጠጦች', subType: 'ቢራ', buyPrice: 60, sellPrice: 75, stock: 48 },
-      { id: '36', name: 'ቅዱስ ጊዮርጊስ ቢራ', category: 'ቢራ እና መጠጦች', subType: 'ቢራ', buyPrice: 60, sellPrice: 75, stock: 48 },
-      { id: '37', name: 'ዋልያ ቢራ', category: 'ቢራ እና መጠጦች', subType: 'ቢራ', buyPrice: 60, sellPrice: 75, stock: 48 },
-      { id: '38', name: 'ዳሽን ቢራ', category: 'ቢራ እና መጠጦች', subType: 'ቢራ', buyPrice: 55, sellPrice: 70, stock: 48 },
-      { id: '39', name: 'ሀይኒከን (Heineken)', category: 'ቢራ እና መጠጦች', subType: 'ቢራ', buyPrice: 75, sellPrice: 95, stock: 30 },
-      { id: '40', name: 'ቢ29 የልብስ ሳሙና', category: 'የንፅህና መጠበቂያ', subType: 'ሳሙና', buyPrice: 44, sellPrice: 55, stock: 60 },
-      { id: '41', name: 'የገላ ሳሙና (ላይፍቦይ)', category: 'የንፅህና መጠበቂያ', subType: 'ሳሙና', buyPrice: 50, sellPrice: 65, stock: 40 },
-      { id: '42', name: 'ኦሞ 500 ግራም', category: 'የንፅህና መጠበቂያ', subType: 'ሳሙና', buyPrice: 115, sellPrice: 140, stock: 30 },
-      { id: '43', name: 'ሶፍት (ሮል)', category: 'የንፅህና መጠበቂያ', subType: 'ሶፍት', buyPrice: 28, sellPrice: 40, stock: 80 },
-      { id: '44', name: 'ሞዴስ (ሳኒታሪ ፓድ)', category: 'የንፅህና መጠበቂያ', subType: 'ፓድ', buyPrice: 85, sellPrice: 110, stock: 35 },
-      { id: '45', name: 'በረኪና 1 ሊትር', category: 'የንፅህና መጠበቂያ', subType: 'በረኪና', buyPrice: 46, sellPrice: 60, stock: 25 },
-      { id: '46', name: 'ዳይፐር ቁጥር 3 (ትልቅ)', category: 'የህፃናት እቃዎች', subType: 'ዳይፐር', buyPrice: 720, sellPrice: 850, stock: 15 },
-      { id: '47', name: 'ዳይፐር ቁጥር 2 (መካከለኛ)', category: 'የህፃናት እቃዎች', subType: 'ዳይፐር', buyPrice: 680, sellPrice: 800, stock: 15 },
-      { id: '48', name: 'ሴሪላክ 400 ግራም', category: 'የህፃናት እቃዎች', subType: 'የህፃን ምግብ', buyPrice: 550, sellPrice: 650, stock: 10 }
-    ];
-
+    // Tab Switcher
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      
-      if (tabId === 'inventoryTab') {
-        document.querySelectorAll('.tab-btn')[0].classList.add('active');
-      } else {
-        document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        renderFinance();
-      }
+      event.target.classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
 
-    function switchStore() {
-      currentShopId = document.getElementById('currentStore').value;
-      renderProducts();
-      renderFinance();
-    }
+    // Cashflow Storage
+    let records = JSON.parse(localStorage.getItem('shop_records')) || [];
+    let customProducts = JSON.parse(localStorage.getItem('shop_products')) || [];
 
-    function getProducts() {
-      const d = localStorage.getItem(`inv_v3_${currentShopId}`);
-      if (!d) {
-        localStorage.setItem(`inv_v3_${currentShopId}`, JSON.stringify(seedCatalog));
-        return seedCatalog;
-      }
-      return JSON.parse(d);
-    }
-
-    function saveProduct(e) {
-      e.preventDefault();
-      const name = document.getElementById('pName').value.trim();
-      const category = document.getElementById('pCategory').value;
-      const subType = document.getElementById('pSubType').value.trim() || '-';
-      const buyPrice = parseFloat(document.getElementById('pBuyPrice').value);
-      const sellPrice = parseFloat(document.getElementById('pSellPrice').value);
-      const stock = parseInt(document.getElementById('pStock').value) || 0;
-
-      const prods = getProducts();
-      prods.unshift({
-        id: 'P_' + Date.now(),
-        name, category, subType, buyPrice, sellPrice, stock
-      });
-
-      localStorage.setItem(`inv_v3_${currentShopId}`, JSON.stringify(prods));
-      document.getElementById('productForm').reset();
-      renderProducts();
-    }
-
-    function quickEditPrice(id, oldPrice) {
-      const newPrice = prompt(`የአሁኑ መሸጫ ዋጋ ${oldPrice} ብር ነው። አዲሱን መሸጫ ዋጋ ያስገቡ:`, oldPrice);
-      if (newPrice !== null && newPrice.trim() !== "") {
-        const parsed = parseFloat(newPrice);
-        if (!isNaN(parsed) && parsed > 0) {
-          let prods = getProducts();
-          const target = prods.find(p => p.id === id);
-          if (target) {
-            target.sellPrice = parsed;
-            localStorage.setItem(`inv_v3_${currentShopId}`, JSON.stringify(prods));
-            renderProducts();
-          }
-        } else {
-          alert("እባክዎ ትክክለኛ ቁጥር ያስገቡ!");
-        }
-      }
-    }
-
-    function deleteProduct(id) {
-      if (confirm('ይህን እቃ ከሱቁ ማስወገድ ይፈልጋሉ?')) {
-        let prods = getProducts().filter(p => p.id !== id);
-        localStorage.setItem(`inv_v3_${currentShopId}`, JSON.stringify(prods));
-        renderProducts();
-      }
-    }
-
-    function renderProducts() {
-      const prods = getProducts();
-      const q = document.getElementById('searchProd').value.toLowerCase();
-      const cont = document.getElementById('productsContainer');
-      document.getElementById('prodCountBadge').textContent = `${prods.length} እቃዎች`;
-
-      const filtered = prods.filter(p => 
-        p.name.toLowerCase().includes(q) || 
-        p.category.toLowerCase().includes(q) ||
-        (p.subType && p.subType.toLowerCase().includes(q))
-      );
-
-      if (filtered.length === 0) {
-        cont.innerHTML = '<p style="color:#94a3b8; text-align:center; padding:16px;">ምንም እቃ የለም</p>';
-        return;
-      }
-
-      cont.innerHTML = filtered.map(p => {
-        const profit = p.sellPrice - p.buyPrice;
-        return `
-          <div class="product-item">
-            <div>
-              <strong>${p.name}</strong>
-              <div class="prod-sub">
-                <span class="badge">${p.category}</span>
-                <span class="badge" style="background:#e0f2fe; color:#0369a1;">${p.subType}</span>
-                <span style="margin-left:4px;">ስቶክ: ${p.stock}</span>
-              </div>
-              <div style="font-size:0.8rem; color:#059669; margin-top:2px;">
-                ግዢ: ${p.buyPrice} ብር | <strong>መሸጫ: ${p.sellPrice} ብር</strong> (ትርፍ: +${profit.toFixed(1)} ብር)
-              </div>
-            </div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn-edit" onclick="quickEditPrice('${p.id}', ${p.sellPrice})">✏️ ዋጋ</button>
-              <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">ሰርዝ</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function getTransactions() {
-      const d = localStorage.getItem(`tx_v3_${currentShopId}`);
-      return d ? JSON.parse(d) : [];
-    }
-
-    function saveTransaction(e) {
-      e.preventDefault();
-      const type = document.getElementById('txType').value;
-      const amount = parseFloat(document.getElementById('txAmount').value);
-      const desc = document.getElementById('txDesc').value.trim();
-
-      const txs = getTransactions();
-      txs.unshift({
-        id: 'TX_' + Date.now(),
-        type, amount, desc,
-        date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
-
-      localStorage.setItem(`tx_v3_${currentShopId}`, JSON.stringify(txs));
-      document.getElementById('financeForm').reset();
-      renderFinance();
-    }
-
-    function renderFinance() {
-      const txs = getTransactions();
-      const cont = document.getElementById('txContainer');
-
+    function updateStats() {
       let income = 0;
       let expense = 0;
 
-      txs.forEach(t => {
-        if (t.type === 'ገቢ') income += t.amount;
-        if (t.type === 'ወጪ') expense += t.amount;
+      records.forEach(r => {
+        if (r.type === 'income') income += Number(r.amount);
+        if (r.type === 'expense') expense += Number(r.amount);
       });
 
-      const netProfit = income - expense;
+      document.getElementById('totalIncome').innerText = `${income.toLocaleString()} ብር`;
+      document.getElementById('totalExpense').innerText = `${expense.toLocaleString()} ብር`;
+      document.getElementById('netBalance').innerText = `${(income - expense).toLocaleString()} ብር`;
 
-      document.getElementById('kpiIncome').textContent = `${income.toFixed(2)} ብር`;
-      document.getElementById('kpiExpense').textContent = `${expense.toFixed(2)} ብር`;
-      document.getElementById('kpiNetProfit').textContent = `${netProfit.toFixed(2)} ብር`;
-      document.getElementById('kpiTxCount').textContent = txs.length;
+      renderRecords();
+    }
 
-      if (txs.length === 0) {
-        cont.innerHTML = '<p style="color:#94a3b8; text-align:center; padding:16px;">ምንም እንቅስቃሴ አልተመዘገበም</p>';
+    function addCashRecord(e) {
+      e.preventDefault();
+      const type = document.getElementById('recordType').value;
+      const amount = document.getElementById('recordAmount').value;
+      const desc = document.getElementById('recordDesc').value;
+      const date = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      records.unshift({ id: Date.now(), type, amount, desc, date });
+      localStorage.setItem('shop_records', JSON.stringify(records));
+      document.getElementById('cashForm').reset();
+      updateStats();
+    }
+
+    function deleteRecord(id) {
+      records = records.filter(r => r.id !== id);
+      localStorage.setItem('shop_records', JSON.stringify(records));
+      updateStats();
+    }
+
+    function renderRecords() {
+      const list = document.getElementById('recordsList');
+      if (records.length === 0) {
+        list.innerHTML = `<li style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:10px;">እስካሁን የተመዘገበ የለም</li>`;
         return;
       }
-
-      cont.innerHTML = txs.map(t => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #f1f5f9;">
-          <div>
-            <strong>${t.desc}</strong>
-            <div style="font-size:0.75rem; color:#94a3b8;">${t.date}</div>
+      list.innerHTML = records.map(r => `
+        <li class="list-row">
+          <div class="row-info">
+            <h4 style="color:${r.type === 'income' ? '#34d399' : '#f87171'}">
+              ${r.type === 'income' ? '+ ' : '- '}${Number(r.amount).toLocaleString()} ብር
+            </h4>
+            <p>${r.desc} (${r.date})</p>
           </div>
-          <span style="font-weight:bold; color:${t.type === 'ገቢ' ? '#15803d' : '#b91c1c'};">
-            ${t.type === 'ገቢ' ? '+' : '-'}${t.amount.toFixed(2)} ብር
-          </span>
-        </div>
+          <div class="row-actions">
+            <button class="btn-del" onclick="deleteRecord(${r.id})">አጥፋ</button>
+          </div>
+        </li>
       `).join('');
     }
 
-    window.onload = () => {
+    // Product Add
+    function addNewProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById('itemName').value;
+      const price = document.getElementById('itemPrice').value;
+      const icon = document.getElementById('itemIcon').value || '📦';
+
+      customProducts.unshift({ id: Date.now(), name, price, icon });
+      localStorage.setItem('shop_products', JSON.stringify(customProducts));
+      document.getElementById('itemForm').reset();
       renderProducts();
-      renderFinance();
-    };
+      alert("✅ አዲስ ዕቃ በተሳካ ሁኔታ ተጨምሯል!");
+    }
+
+    function deleteProduct(id) {
+      customProducts = customProducts.filter(p => p.id !== id);
+      localStorage.setItem('shop_products', JSON.stringify(customProducts));
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const list = document.getElementById('productsList');
+      if (customProducts.length === 0) {
+        list.innerHTML = `<li style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:10px;">ተጨማሪ ዕቃ አልተመዘገበም</li>`;
+        return;
+      }
+      list.innerHTML = customProducts.map(p => `
+        <li class="list-row">
+          <div class="row-info">
+            <h4>${p.icon} ${p.name}</h4>
+            <p style="color:#34d399; font-weight:700;">${p.price}</p>
+          </div>
+          <div class="row-actions">
+            <button class="btn-del" onclick="deleteProduct(${p.id})">አጥፋ</button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // Init
+    updateStats();
+    renderProducts();
   </script>
 </body>
 </html>
+          
