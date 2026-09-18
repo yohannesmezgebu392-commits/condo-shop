@@ -1,10 +1,9 @@
-
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="am">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>የሱቅ አስተዳዳሪ | ወጪ፣ ቀሪ እና እቃዎች</title>
+  <title>የሱቅ አስተዳዳሪ | ዳሽቦርድ እና የሂሳብ መዝገብ</title>
   <style>
     :root {
       --primary: #10b981;
@@ -18,8 +17,18 @@
       --text-muted: #94a3b8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 60px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 60px;
+    }
 
     header {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -37,7 +46,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .summary-card {
       background: var(--card-bg);
@@ -52,13 +61,31 @@
     .val-expense { color: #f87171; }
     .val-balance { color: #38bdf8; }
 
+    /* Export to Excel Button */
+    .btn-export {
+      width: 100%;
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
     /* Tabs */
     .tabs {
       display: flex;
       gap: 8px;
       margin-bottom: 16px;
       background: var(--card-inner);
-      padding: 6px;
+      padding: 5px;
       border-radius: 12px;
       border: 1px solid var(--border);
     }
@@ -79,9 +106,6 @@
       color: white;
     }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
     /* Card & Forms */
     .card {
       background: var(--card-bg);
@@ -90,82 +114,64 @@
       padding: 16px;
       margin-bottom: 16px;
     }
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #38bdf8;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
     .form-group { margin-bottom: 12px; }
-    label { display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 4px; }
+    label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
     input, select {
       width: 100%;
       background: var(--card-inner);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 10px 12px;
+      padding: 11px 12px;
       border-radius: 10px;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       outline: none;
     }
-    input:focus, select:focus { border-color: var(--primary); }
-
-    .btn {
+    .btn-action {
       width: 100%;
       background: var(--primary);
       color: white;
       border: none;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 0.95rem;
       font-weight: 700;
-      font-size: 0.9rem;
       cursor: pointer;
     }
-    .btn-danger { background: var(--danger); }
 
-    /* List Display */
-    .item-list { list-style: none; margin-top: 10px; }
-    .list-row {
+    /* Transactions List */
+    .item-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      background: var(--card-inner);
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      border-radius: 10px;
-      margin-bottom: 8px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .row-info h4 { font-size: 0.88rem; font-weight: 700; }
-    .row-info p { font-size: 0.75rem; color: var(--text-muted); }
-    .row-actions { display: flex; align-items: center; gap: 8px; }
-    .btn-del {
+    .item-row:last-child { border-bottom: none; }
+    .item-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .del-btn {
       background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 8px;
+      color: #ef4444;
+      border: none;
+      padding: 5px 8px;
       border-radius: 6px;
-      cursor: pointer;
       font-size: 0.75rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>⚙️ የሱቅ አስተዳዳሪ ፓነል</h1>
-    <p>የዕለቱ ሽያጭ፣ ወጪዎች እና የዕቃ ዝርዝር መቆጣጠሪያ</p>
+    <h1>የሱቅ አስተዳዳሪ ዳሽቦርድ</h1>
+    <p>የእለት ተእለት ገቢ፣ ወጪ እና የትርፍ መቆጣጠሪያ</p>
   </header>
 
   <div class="container">
-
-    <!-- Overview Stats -->
+    
+    <!-- ማጠቃለያ ካርዶች -->
     <div class="summary-grid">
       <div class="summary-card">
-        <div class="summary-title">ጠቅላላ ሽያጭ (ገቢ)</div>
+        <div class="summary-title">ጠቅላላ ገቢ</div>
         <div class="summary-val val-income" id="totalIncome">0 ብር</div>
       </div>
       <div class="summary-card">
@@ -178,183 +184,160 @@
       </div>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- ወደ Excel ማውረጃ ቁልፍ -->
+    <button class="btn-export" onclick="exportToExcel()">📊 የዕለቱን ሂሳብ በ Excel አውርድ (Save to CSV)</button>
+
+    <!-- ታቦች -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('cashflow')">💰 ወጪ እና ገቢ</button>
-      <button class="tab-btn" onclick="switchTab('inventory')">📦 አዲስ ዕቃ መጨመሪያ</button>
+      <button class="tab-btn active" onclick="switchTab('finance')">💰 ወጪና ገቢ መዝግብ</button>
+      <button class="tab-btn" onclick="switchTab('list')">📋 የተመዘገቡ ዝርዝሮች</button>
     </div>
 
-    <!-- TAB 1: CASHFLOW & EXPENSES -->
-    <div id="cashflow" class="tab-content active">
-      <div class="card">
-        <div class="card-title">➕ የገንዘብ እንቅስቃሴ መዝግብ</div>
-        <form id="cashForm" onsubmit="addCashRecord(event)">
-          <div class="form-group">
-            <label>ዓይነት</label>
-            <select id="recordType">
-              <option value="expense">ወጪ (ለምሳሌ፡ ለጅምላ እቃ፣ ትራንስፖርት...)</option>
-              <option value="income">ገቢ (የዕለቱ ጥሬ ሽያጭ)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>የገንዘብ መጠን (ብር)</label>
-            <input type="number" id="recordAmount" placeholder="ምሳሌ፦ 500" required>
-          </div>
-          <div class="form-group">
-            <label>ምክንያት / ማብራሪያ</label>
-            <input type="text" id="recordDesc" placeholder="ምሳሌ፦ የዘይት እና ስኳር ግዢ" required>
-          </div>
-          <button type="submit" class="btn">መዝግብ</button>
-        </form>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📋 የቅርብ ጊዜ ወጪና ገቢ ታሪክ</div>
-        <ul class="item-list" id="recordsList"></ul>
-      </div>
+    <!-- ክፍል 1፡ ወጪና ገቢ መመዝገቢያ -->
+    <div id="tabFinance" class="card">
+      <form id="financeForm" onsubmit="addTransaction(event)">
+        <div class="form-group">
+          <label>የግብይት አይነት</label>
+          <select id="tType" required>
+            <option value="income">ገቢ (+) (የቀኑ ሽያጭ)</option>
+            <option value="expense">ወጪ (-) (የእቃ ግዢ፣ ሌላ ወጪ)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ዝርዝር መግለጫ</label>
+          <input type="text" id="tTitle" placeholder="ምሳሌ፦ የጠዋት ሽያጭ፣ የዳቦ ግዢ..." required>
+        </div>
+        <div class="form-group">
+          <label>የገንዘብ መጠን (ብር)</label>
+          <input type="number" id="tAmount" placeholder="ምሳሌ፦ 500" required>
+        </div>
+        <button type="submit" class="btn-action">+ መዝግብ</button>
+      </form>
     </div>
 
-    <!-- TAB 2: INVENTORY MANAGEMENT -->
-    <div id="inventory" class="tab-content">
-      <div class="card">
-        <div class="card-title">🛍️ አዲስ ዕቃ ወደ ሱቁ ጨምር</div>
-        <form id="itemForm" onsubmit="addNewProduct(event)">
-          <div class="form-group">
-            <label>የዕቃው ስም</label>
-            <input type="text" id="itemName" placeholder="ምሳሌ፦ የታሸገ ወተት" required>
-          </div>
-          <div class="form-group">
-            <label>ዋጋ (በብር)</label>
-            <input type="text" id="itemPrice" placeholder="ምሳሌ፦ 85 ብር" required>
-          </div>
-          <div class="form-group">
-            <label>ምልክት / ኢሞጂ (Icon)</label>
-            <input type="text" id="itemIcon" placeholder="ምሳሌ፦ 🥛 ወይም 🍞" value="📦">
-          </div>
-          <button type="submit" class="btn">ዕቃውን ጨምር</button>
-        </form>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📦 በሱቁ ውስጥ ያሉ ዕቃዎች</div>
-        <ul class="item-list" id="productsList"></ul>
-      </div>
+    <!-- ክፍል 2፡ የዝርዝር ማሳያ -->
+    <div id="tabList" class="card" style="display: none;">
+      <div id="transactionsList"></div>
     </div>
 
   </div>
 
   <script>
-    // Tab Switcher
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
+    let transactions = JSON.parse(localStorage.getItem('condo_shop_finance') || '[]');
+
+    function saveAndRender() {
+      localStorage.setItem('condo_shop_finance', JSON.stringify(transactions));
+      renderSummary();
+      renderList();
     }
 
-    // Cashflow Storage
-    let records = JSON.parse(localStorage.getItem('shop_records')) || [];
-    let customProducts = JSON.parse(localStorage.getItem('shop_products')) || [];
+    function addTransaction(e) {
+      e.preventDefault();
+      const type = document.getElementById('tType').value;
+      const title = document.getElementById('tTitle').value.trim();
+      const amount = parseFloat(document.getElementById('tAmount').value);
 
-    function updateStats() {
+      if (!title || isNaN(amount)) return;
+
+      const dateStr = new Date().toLocaleDateString('am-ET') + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      transactions.unshift({
+        id: Date.now(),
+        type,
+        title,
+        amount,
+        date: dateStr
+      });
+
+      document.getElementById('financeForm').reset();
+      saveAndRender();
+      alert("✅ መረጃው በተሳካ ሁኔታ ተመዝግቧል!");
+    }
+
+    function deleteTx(id) {
+      if (confirm("እርግጠኛ ነዎት ይህ መረጃ ይሰረዝ?")) {
+        transactions = transactions.filter(t => t.id !== id);
+        saveAndRender();
+      }
+    }
+
+    function renderSummary() {
       let income = 0;
       let expense = 0;
 
-      records.forEach(r => {
-        if (r.type === 'income') income += Number(r.amount);
-        if (r.type === 'expense') expense += Number(r.amount);
+      transactions.forEach(t => {
+        if (t.type === 'income') income += t.amount;
+        if (t.type === 'expense') expense += t.amount;
       });
 
-      document.getElementById('totalIncome').innerText = `${income.toLocaleString()} ብር`;
-      document.getElementById('totalExpense').innerText = `${expense.toLocaleString()} ብር`;
-      document.getElementById('netBalance').innerText = `${(income - expense).toLocaleString()} ብር`;
-
-      renderRecords();
+      document.getElementById('totalIncome').innerText = income.toLocaleString() + ' ብር';
+      document.getElementById('totalExpense').innerText = expense.toLocaleString() + ' ብር';
+      document.getElementById('netBalance').innerText = (income - expense).toLocaleString() + ' ብር';
     }
 
-    function addCashRecord(e) {
-      e.preventDefault();
-      const type = document.getElementById('recordType').value;
-      const amount = document.getElementById('recordAmount').value;
-      const desc = document.getElementById('recordDesc').value;
-      const date = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-      records.unshift({ id: Date.now(), type, amount, desc, date });
-      localStorage.setItem('shop_records', JSON.stringify(records));
-      document.getElementById('cashForm').reset();
-      updateStats();
-    }
-
-    function deleteRecord(id) {
-      records = records.filter(r => r.id !== id);
-      localStorage.setItem('shop_records', JSON.stringify(records));
-      updateStats();
-    }
-
-    function renderRecords() {
-      const list = document.getElementById('recordsList');
-      if (records.length === 0) {
-        list.innerHTML = `<li style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:10px;">እስካሁን የተመዘገበ የለም</li>`;
+    function renderList() {
+      const container = document.getElementById('transactionsList');
+      if (transactions.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">ምንም የተመዘገበ መረጃ የለም።</div>';
         return;
       }
-      list.innerHTML = records.map(r => `
-        <li class="list-row">
-          <div class="row-info">
-            <h4 style="color:${r.type === 'income' ? '#34d399' : '#f87171'}">
-              ${r.type === 'income' ? '+ ' : '- '}${Number(r.amount).toLocaleString()} ብር
-            </h4>
-            <p>${r.desc} (${r.date})</p>
+
+      container.innerHTML = transactions.map(t => `
+        <div class="item-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.92rem;">${t.title}</div>
+            <div class="item-meta">${t.date}</div>
           </div>
-          <div class="row-actions">
-            <button class="btn-del" onclick="deleteRecord(${r.id})">አጥፋ</button>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-weight: 800; color: ${t.type === 'income' ? '#34d399' : '#f87171'}">
+              ${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()} ብር
+            </span>
+            <button class="del-btn" onclick="deleteTx(${t.id})">አጥፋ</button>
           </div>
-        </li>
+        </div>
       `).join('');
     }
 
-    // Product Add
-    function addNewProduct(e) {
-      e.preventDefault();
-      const name = document.getElementById('itemName').value;
-      const price = document.getElementById('itemPrice').value;
-      const icon = document.getElementById('itemIcon').value || '📦';
+    function switchTab(tab) {
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
 
-      customProducts.unshift({ id: Date.now(), name, price, icon });
-      localStorage.setItem('shop_products', JSON.stringify(customProducts));
-      document.getElementById('itemForm').reset();
-      renderProducts();
-      alert("✅ አዲስ ዕቃ በተሳካ ሁኔታ ተጨምሯል!");
+      if (tab === 'finance') {
+        btns[0].classList.add('active');
+        document.getElementById('tabFinance').style.display = 'block';
+        document.getElementById('tabList').style.display = 'none';
+      } else {
+        btns[1].classList.add('active');
+        document.getElementById('tabFinance').style.display = 'none';
+        document.getElementById('tabList').style.display = 'block';
+      }
     }
 
-    function deleteProduct(id) {
-      customProducts = customProducts.filter(p => p.id !== id);
-      localStorage.setItem('shop_products', JSON.stringify(customProducts));
-      renderProducts();
-    }
-
-    function renderProducts() {
-      const list = document.getElementById('productsList');
-      if (customProducts.length === 0) {
-        list.innerHTML = `<li style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:10px;">ተጨማሪ ዕቃ አልተመዘገበም</li>`;
+    // ወደ Excel / CSV ፋይል ቀይሮ ማውረጃ
+    function exportToExcel() {
+      if (transactions.length === 0) {
+        alert("የሚወርድ ምንም የተመዘገበ ሂሳብ የለም!");
         return;
       }
-      list.innerHTML = customProducts.map(p => `
-        <li class="list-row">
-          <div class="row-info">
-            <h4>${p.icon} ${p.name}</h4>
-            <p style="color:#34d399; font-weight:700;">${p.price}</p>
-          </div>
-          <div class="row-actions">
-            <button class="btn-del" onclick="deleteProduct(${p.id})">አጥፋ</button>
-          </div>
-        </li>
-      `).join('');
+
+      let csvContent = "\uFEFFቀንና ሰዓት,ዝርዝር መግለጫ,አይነት,መጠን (ብር)\n";
+      transactions.forEach(t => {
+        const typeText = t.type === 'income' ? 'ገቢ' : 'ወጪ';
+        csvContent += `"${t.date}","${t.title}","${typeText}",${t.amount}\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `የሱቅ_የሂሳብ_መዝገብ_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
-    // Init
-    updateStats();
-    renderProducts();
+    // የመጀመሪያ ጅምር
+    saveAndRender();
   </script>
 </body>
 </html>
-          
