@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>የኮንዶሚኒየም ፈጣን ማዘዣ</title>
+  <title>የኮንዶሚኒየም ባለብዙ ሱቅ ማዘዣ ገጽ</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;700;800&display=swap');
 
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
+      --bg: #0b1329;
+      --card: #16203c;
+      --card-border: #22325c;
       --accent: #10b981;
       --accent-hover: #059669;
       --text: #f8fafc;
       --muted: #94a3b8;
-      --border: #334155;
       --warning: #f59e0b;
       --blue: #0284c7;
+      --danger: #ef4444;
     }
 
     * {
@@ -31,7 +32,7 @@
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 16px 12px;
+      padding: 14px 10px 60px 10px;
       min-height: 100vh;
     }
 
@@ -42,70 +43,190 @@
 
     .header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+    }
+
+    .shop-badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .header h1 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: #38bdf8;
     }
 
     .header p {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--muted);
       margin-top: 4px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
+    .rule-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px dashed var(--warning);
+      color: #fde68a;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 14px;
     }
 
-    .card-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #38bdf8;
+    .section-label {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #7dd3fc;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 12px;
+    }
+
+    /* 9 እቃዎች ግሪድ */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .item-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .item-icon {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+    }
+
+    .item-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+    }
+
+    .item-price {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #34d399;
+      margin: 4px 0 6px 0;
+    }
+
+    .btn-add {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 0.85rem;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-qty {
+      background: #334155;
+      color: white;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .cart-summary {
+      margin-top: 12px;
+      padding-top: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .total-row {
+      font-size: 1.05rem;
+      color: #38bdf8;
+      border-top: 1px dashed var(--card-border);
+      padding-top: 6px;
+      margin-top: 6px;
     }
 
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text);
+      margin-bottom: 5px;
     }
 
-    input, select, textarea {
+    input, select {
       width: 100%;
       background: #0b1329;
-      border: 1px solid var(--border);
+      border: 1px solid var(--card-border);
       color: var(--text);
-      padding: 10px 12px;
+      padding: 9px 10px;
       border-radius: 8px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       outline: none;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: #38bdf8;
     }
 
     .row {
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
 
     .row .form-group {
@@ -116,11 +237,10 @@
       background: rgba(245, 158, 11, 0.15);
       border: 1px solid var(--warning);
       color: #fde68a;
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       margin-top: 6px;
-      display: none;
       font-weight: 600;
     }
 
@@ -128,20 +248,8 @@
       border: 1px dashed #38bdf8;
       background: rgba(2, 132, 199, 0.08);
       border-radius: 8px;
-      padding: 14px;
-      margin-top: 10px;
-    }
-
-    .pay-header {
-      font-size: 0.85rem;
-      color: #7dd3fc;
-      font-weight: 700;
-    }
-
-    .pay-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 10px;
+      padding: 12px;
+      margin-top: 8px;
     }
 
     .account-badge {
@@ -149,15 +257,14 @@
       justify-content: space-between;
       align-items: center;
       background: #0f172a;
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
-      margin-bottom: 12px;
+      margin: 6px 0 10px 0;
     }
 
     .account-number {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 800;
-      letter-spacing: 1px;
       color: white;
     }
 
@@ -165,10 +272,9 @@
       background: var(--blue);
       color: white;
       border: none;
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.75rem;
       cursor: pointer;
     }
 
@@ -177,17 +283,27 @@
       background: var(--accent);
       color: white;
       border: none;
-      padding: 14px;
+      padding: 13px;
       border-radius: 10px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-      transition: background 0.2s;
     }
 
-    .btn-submit:hover {
-      background: var(--accent-hover);
+    .btn-submit:disabled {
+      background: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .min-order-alert {
+      color: var(--danger);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 6px;
+      display: none;
     }
 
     .success-alert {
@@ -200,15 +316,64 @@
       text-align: center;
       font-size: 0.95rem;
       font-weight: 700;
-      margin-top: 14px;
     }
 
-    .divider-text {
+    /* የባለሱቅ ማስተካከያ ክፍል */
+    .admin-toggle {
+      margin-top: 24px;
       text-align: center;
-      font-size: 0.75rem;
+    }
+
+    .btn-admin {
+      background: transparent;
+      border: 1px solid var(--card-border);
       color: var(--muted);
-      margin: 8px 0;
-      position: relative;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .admin-panel {
+      display: none;
+      background: #090e1a;
+      border: 1px solid var(--blue);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .admin-panel h3 {
+      font-size: 0.85rem;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+
+    .price-input-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+    }
+
+    .price-input-row input {
+      width: 80px;
+      padding: 4px 6px;
+      text-align: right;
+    }
+
+    .btn-save-settings {
+      width: 100%;
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -216,57 +381,75 @@
 
   <div class="container">
     <div class="header">
+      <div class="shop-badge" id="shopBadge">🏪 ሱቅ፦ ያብስራ ሱቅ</div>
       <h1>የኮንዶሚኒየም ፈጣን ማዘዣ</h1>
-      <p>ትዕዛዝዎን ይላኩ፤ በደቂቃዎች ውስጥ ደጃፍዎ እናደርሳለን</p>
+      <p>ትዕዛዝዎን ይምረጡ፤ በደቂቃዎች ውስጥ ደጃፍዎ እናደርሳለን</p>
     </div>
 
+    <div class="rule-banner">
+      ⚠️ ዝቅተኛ የትዕዛዝ መጠን 100 ብር ነው። ከ 100 ብር በታች ፈጣን ማድረስ አይቻልም።
+    </div>
+
+    <!-- 9 እቃዎች -->
+    <div class="section-label">🛒 ተወዳጅ እቃዎች (መምረጥ ይችላሉ)</div>
+    <div class="catalog-grid" id="catalogGrid"></div>
+
     <form id="orderForm">
-      <!-- የእቃ መረጃ -->
+      <!-- የተመረጡ እቃዎች ቅርጫት -->
       <div class="card">
-        <div class="card-title">📦 የሚፈልጉት እቃ ዝርዝር</div>
-        <div class="form-group">
-          <label>የእቃው ስም</label>
-          <input type="text" id="itemName" placeholder="ምሳሌ፦ እንጀራ፣ ዘይት፣ ውሃ..." required>
+        <div class="section-label">🛍️ የእርስዎ ቅርጫት (<span id="cartCount">0</span> እቃ)</div>
+        <div id="cartItemsContainer">
+          <p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም፤ ከላይ «+» ይጫኑ</p>
         </div>
-        <div class="form-group">
-          <label>ብዛት / መጠን</label>
-          <input type="text" id="itemQty" placeholder="ምሳሌ፦ 5 ፍሬ ወይም 1 ሊትር" required>
+        
+        <div class="cart-summary" id="cartSummarySection" style="display:none;">
+          <div class="summary-row">
+            <span>የእቃዎች ድምር፦</span>
+            <span><strong id="subTotal">0</strong> ብር</span>
+          </div>
+          <div class="summary-row" id="urgentFeeRow">
+            <span>አጣዳፊ ማድረሻ፦</span>
+            <span><strong id="urgentFeeDisplay">25</strong> ብር</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>አጠቃላይ የሚከፈለው፦</span>
+            <span><strong id="grandTotal">0</strong> ብር</span>
+          </div>
         </div>
       </div>
 
       <!-- አድራሻ -->
       <div class="card">
-        <div class="card-title">📍 የት ይድረስልዎ? (አድራሻ)</div>
+        <div class="section-label">📍 አድራሻ እና ስልክ</div>
         <div class="row">
           <div class="form-group">
             <label>ብሎክ</label>
-            <input type="text" id="blockNo" placeholder="ምሳሌ፡ 7" required>
+            <input type="text" id="blockNo" placeholder="7" required>
           </div>
           <div class="form-group">
-            <label>ፎቅ (ደረጃ)</label>
-            <input type="text" id="floorNo" placeholder="ምሳሌ፡ 3" required>
+            <label>ደረጃ</label>
+            <input type="text" id="floorNo" placeholder="3" required>
           </div>
           <div class="form-group">
-            <label>የቤት ቁጥር</label>
-            <input type="text" id="houseNo" placeholder="ምሳሌ፡ 12" required>
+            <label>ቤት ቁጥር</label>
+            <input type="text" id="houseNo" placeholder="12" required>
           </div>
         </div>
         <div class="form-group">
           <label>ስልክ ቁጥርዎ</label>
-          <input type="tel" id="customerPhone" placeholder="ምሳሌ፡ 09..." required>
+          <input type="tel" id="customerPhone" placeholder="09..." required>
         </div>
       </div>
 
       <!-- ሰዓት እና ክፍያ -->
       <div class="card">
-        <div class="card-title">⏰ ሰዓት እና የክፍያ አማራጭ</div>
+        <div class="section-label">⏰ ሰዓት እና ክፍያ</div>
 
         <div class="form-group">
-          <label>ለስንት ሰዓት ይድረስልዎ?</label>
-          <select id="deliveryTime" onchange="toggleUrgentNotice()">
+          <label>የማድረሻ ሰዓት</label>
+          <select id="deliveryTime" onchange="calculateTotals()">
             <option value="በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)" selected>በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)</option>
             <option value="መደበኛ (በ30-45 ደቂቃ ውስጥ)">መደበኛ (በ30-45 ደቂቃ ውስጥ)</option>
-            <option value="በተወሰነ ሰዓት (ቀጠሮ)">በተወሰነ ሰዓት (ቀጠሮ)</option>
           </select>
           <div id="urgentNotice" class="notice-urgent">
             ⚡ ለአጣዳፊ ትዕዛዝ ለሱቁ +25 ብር ተጨማሪ የማድረሻ ክፍያ ይታሰባል።
@@ -274,7 +457,7 @@
         </div>
 
         <div class="form-group">
-          <label>በምን ይከፍላሉ?</label>
+          <label>የክፍያ አማራጭ</label>
           <select id="paymentMethod" onchange="updatePaymentDetails()">
             <option value="Telebirr">ቴሌብር (Telebirr)</option>
             <option value="CBE">የኢትዮጵያ ንግድ ባንክ (CBE)</option>
@@ -282,54 +465,202 @@
           </select>
         </div>
 
-        <!-- ዲጂታል ክፍያ ሳጥን -->
         <div id="paymentBox" class="payment-box">
-          <div id="payHeader" class="pay-header">የቴሌብር ስልክ ቁጥር፦</div>
-          <div id="paySub" class="pay-sub">የሂሳብ ስም፦ ዮሐንስ</div>
-
+          <div id="payHeader" style="font-size:0.8rem; color:#7dd3fc; font-weight:700;">የቴሌብር ቁጥር፦</div>
           <div class="account-badge">
             <span id="accountNumber" class="account-number">0948622684</span>
-            <button type="button" class="btn-copy" onclick="copyAccount()">ኮፒ አድርግ 📋</button>
+            <button type="button" class="btn-copy" onclick="copyAccount()">ኮፒ 📋</button>
           </div>
-
           <div class="form-group">
-            <label>የከፈሉበት ስክሪንሾት (ደረሰኝ) ካለ ያያይዙ፦</label>
+            <label>የከፈሉበት ስክሪንሾት (ደረሰኝ)፦</label>
             <input type="file" id="receiptFile" accept="image/*">
           </div>
-
-          <div class="divider-text">ወይም (ፎቶ ካልያያዙ)</div>
-
-          <div class="form-group">
-            <label>የከፈሉበት Transaction ID / ሊንክ ያስገቡ፦</label>
-            <input type="text" id="transactionId" placeholder="ምሳሌ፦ DH17G6OUOR ወይም የቴሌብር ሊንክ">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>ወይም የትራንዛክሽን ሊንክ / ID፦</label>
+            <input type="text" id="transactionId" placeholder="ምሳሌ፦ DH17G6OUOR">
           </div>
-        </div>
-
-        <div class="form-group" style="margin-top: 12px;">
-          <label>ተጨማሪ አስተያየት (ካለ)</label>
-          <input type="text" id="orderNotes" placeholder="ምሳሌ፡ በሩን አንኳኩተው ይደውሉልኝ...">
         </div>
       </div>
 
-      <button type="submit" id="submitBtn" class="btn-submit">ትዕዛዝህን ላክ 🚀</button>
+      <button type="submit" id="submitBtn" class="btn-submit" disabled>ትዕዛዝህን ላክ 🚀</button>
+      <div id="minOrderAlert" class="min-order-alert">❌ ዝቅተኛው የትዕዛዝ መጠን 100 ብር ነው። እባክዎ ተጨማሪ እቃ ይምረጡ።</div>
     </form>
 
     <div id="successAlert" class="success-alert">
-      ✅ ትዕዛዝዎ በተሳካ ሁኔታ ተልኳል! እቃው በደቂቃዎች ውስጥ ይደርስዎታል።
+      ✅ ትዕዛዝዎ በተሳካ ሁኔታ ደርሷል! እቃው በደቂቃዎች ውስጥ ይደርስዎታል።
+    </div>
+
+    <!-- የባለሱቅ ማስተካከያ (Admin / Settings) -->
+    <div class="admin-toggle">
+      <button type="button" class="btn-admin" onclick="toggleAdminPanel()">⚙️ የሱቅ ዋጋና መረጃ ማስተካከያ</button>
+    </div>
+
+    <div id="adminPanel" class="admin-panel">
+      <h3>⚙️ የሱቅ መረጃዎችን መቀየሪያ (ባለሱቁ ብቻ)</h3>
+      <div class="form-group">
+        <label>የሱቁ ስም</label>
+        <input type="text" id="settingShopName">
+      </div>
+      <div class="form-group">
+        <label>የቴሌብር ስልክ ቁጥር</label>
+        <input type="text" id="settingTelebirr">
+      </div>
+      <div class="form-group">
+        <label>የቴሌግራም Chat ID (ከ @userinfobot)</label>
+        <input type="text" id="settingChatId">
+      </div>
+      <h4 style="font-size:0.8rem; color:#fde68a; margin:8px 0;">የ 9ኙ እቃዎች ዋጋ ማስተካከያ (ብር)፦</h4>
+      <div id="priceEditorList"></div>
+      <button type="button" class="btn-save-settings" onclick="saveSettings()">መረጃዎችን ሴቭ አድርግ 💾</button>
     </div>
   </div>
 
   <script>
-    const BOT_TOKEN = "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q";
-    const CHAT_ID = "1000111021841"; // የባለሱቁ ቴሌግራም መታወቂያ
+    // URL Parameter (?shop=yoya) መለየት
+    const urlParams = new URLSearchParams(window.location.search);
+    const SHOP_ID = urlParams.get('shop') || 'default_shop';
 
-    function toggleUrgentNotice() {
-      const timeSelect = document.getElementById("deliveryTime").value;
-      const notice = document.getElementById("urgentNotice");
-      if (timeSelect.includes("በጣም አጣዳፊ")) {
-        notice.style.display = "block";
+    const BOT_TOKEN = "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q";
+
+    // 9 ተወዳጅ ነባሪ እቃዎች
+    const defaultCatalog = [
+      { id: 1, name: "እንጀራ (ፍሬ)", icon: "🫓", price: 30 },
+      { id: 2, name: "የታሸገ ውሃ (2L)", icon: "💧", price: 45 },
+      { id: 3, name: "ዘይት (1 ሊትር)", icon: "🍾", price: 230 },
+      { id: 4, name: "እንቁላል (ፍሬ)", icon: "🥚", price: 25 },
+      { id: 5, name: "ዳቦ (ፍሬ)", icon: "🥖", price: 20 },
+      { id: 6, name: "ወተት (ፓኬት)", icon: "🥛", price: 65 },
+      { id: 7, name: "የገላ ሳሙና", icon: "🧼", price: 50 },
+      { id: 8, name: "ስኳር (1 ኪሎ)", icon: "🍚", price: 130 },
+      { id: 9, name: "ሶፍት (ፓኬት)", icon: "🧻", price: 40 }
+    ];
+
+    let currentShopSettings = {
+      name: "ያብስራ ሱቅ",
+      telebirr: "0948622684",
+      chatId: "1000111021841",
+      catalog: defaultCatalog
+    };
+
+    let cart = {};
+
+    function loadShopData() {
+      const saved = localStorage.getItem(`shop_settings_${SHOP_ID}`);
+      if (saved) {
+        currentShopSettings = JSON.parse(saved);
+      }
+      document.getElementById("shopBadge").innerText = `🏪 ሱቅ፦ ${currentShopSettings.name}`;
+      document.getElementById("accountNumber").innerText = currentShopSettings.telebirr;
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById("catalogGrid");
+      grid.innerHTML = "";
+      currentShopSettings.catalog.forEach(item => {
+        grid.innerHTML += `
+          <div class="item-card">
+            <div class="item-icon">${item.icon}</div>
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">${item.price} ብር</div>
+            <button type="button" class="btn-add" onclick="addToCart(${item.id})">+ ጨምር</button>
+          </div>
+        `;
+      });
+    }
+
+    function addToCart(id) {
+      if (!cart[id]) cart[id] = 0;
+      cart[id]++;
+      renderCart();
+    }
+
+    function changeQty(id, delta) {
+      if (cart[id]) {
+        cart[id] += delta;
+        if (cart[id] <= 0) delete cart[id];
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cartItemsContainer");
+      const keys = Object.keys(cart);
+      document.getElementById("cartCount").innerText = keys.length;
+
+      if (keys.length === 0) {
+        container.innerHTML = `<p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም፤ ከላይ «+» ይጫኑ</p>`;
+        document.getElementById("cartSummarySection").style.display = "none";
+        document.getElementById("submitBtn").disabled = true;
+        document.getElementById("minOrderAlert").style.display = "none";
+        return;
+      }
+
+      document.getElementById("cartSummarySection").style.display = "block";
+      container.innerHTML = "";
+
+      let itemsTotal = 0;
+
+      keys.forEach(id => {
+        const item = currentShopSettings.catalog.find(i => i.id == id);
+        const qty = cart[id];
+        const lineTotal = item.price * qty;
+        itemsTotal += lineTotal;
+
+        container.innerHTML += `
+          <div class="cart-item">
+            <div>
+              <strong>${item.name}</strong><br>
+              <span style="font-size:0.75rem; color:var(--muted);">${item.price} ብር x ${qty} = ${lineTotal} ብር</span>
+            </div>
+            <div class="qty-controls">
+              <button type="button" class="btn-qty" onclick="changeQty(${item.id}, -1)">-</button>
+              <span>${qty}</span>
+              <button type="button" class="btn-qty" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      calculateTotals(itemsTotal);
+    }
+
+    function calculateTotals(sub = null) {
+      if (sub === null) {
+        sub = 0;
+        Object.keys(cart).forEach(id => {
+          const item = currentShopSettings.catalog.find(i => i.id == id);
+          sub += item.price * cart[id];
+        });
+      }
+
+      const delivery = document.getElementById("deliveryTime").value;
+      const urgentNotice = document.getElementById("urgentNotice");
+      const urgentRow = document.getElementById("urgentFeeRow");
+      let urgentFee = 0;
+
+      if (delivery.includes("በጣም አጣዳፊ")) {
+        urgentFee = 25;
+        urgentNotice.style.display = "block";
+        urgentRow.style.display = "flex";
       } else {
-        notice.style.display = "none";
+        urgentFee = 0;
+        urgentNotice.style.display = "none";
+        urgentRow.style.display = "none";
+      }
+
+      document.getElementById("subTotal").innerText = sub;
+      document.getElementById("grandTotal").innerText = sub + urgentFee;
+
+      const submitBtn = document.getElementById("submitBtn");
+      const minAlert = document.getElementById("minOrderAlert");
+
+      if (sub < 100 && Object.keys(cart).length > 0) {
+        submitBtn.disabled = true;
+        minAlert.style.display = "block";
+      } else if (Object.keys(cart).length > 0) {
+        submitBtn.disabled = false;
+        minAlert.style.display = "none";
       }
     }
 
@@ -337,18 +668,15 @@
       const method = document.getElementById("paymentMethod").value;
       const box = document.getElementById("paymentBox");
       const header = document.getElementById("payHeader");
-      const sub = document.getElementById("paySub");
       const acc = document.getElementById("accountNumber");
 
       if (method === "Telebirr") {
         box.style.display = "block";
-        header.innerText = "የቴሌብር ስልክ ቁጥር፦";
-        sub.innerText = "የሂሳብ ስም፦ ዮሐንስ";
-        acc.innerText = "0948622684";
+        header.innerText = "የቴሌብር ቁጥር፦";
+        acc.innerText = currentShopSettings.telebirr;
       } else if (method === "CBE") {
         box.style.display = "block";
         header.innerText = "የንግድ ባንክ አካውንት፦";
-        sub.innerText = "የሂሳብ ስም፦ Yohannes Mezgebu";
         acc.innerText = "1000111021841";
       } else {
         box.style.display = "none";
@@ -361,8 +689,46 @@
       alert("ቁጥሩ ኮፒ ተደርጓል: " + acc);
     }
 
-    // ገጹ ሲከፈት የአጣዳፊ ማሳሰቢያውን አሳይ
-    toggleUrgentNotice();
+    // ባለሱቅ Settings
+    function toggleAdminPanel() {
+      const p = document.getElementById("adminPanel");
+      if (p.style.display === "block") {
+        p.style.display = "none";
+      } else {
+        p.style.display = "block";
+        document.getElementById("settingShopName").value = currentShopSettings.name;
+        document.getElementById("settingTelebirr").value = currentShopSettings.telebirr;
+        document.getElementById("settingChatId").value = currentShopSettings.chatId;
+
+        const list = document.getElementById("priceEditorList");
+        list.innerHTML = "";
+        currentShopSettings.catalog.forEach(item => {
+          list.innerHTML += `
+            <div class="price-input-row">
+              <span>${item.icon} ${item.name}</span>
+              <input type="number" id="price_item_${item.id}" value="${item.price}">
+            </div>
+          `;
+        });
+      }
+    }
+
+    function saveSettings() {
+      currentShopSettings.name = document.getElementById("settingShopName").value;
+      currentShopSettings.telebirr = document.getElementById("settingTelebirr").value;
+      currentShopSettings.chatId = document.getElementById("settingChatId").value;
+
+      currentShopSettings.catalog.forEach(item => {
+        const inp = document.getElementById(`price_item_${item.id}`);
+        if (inp) item.price = Number(inp.value);
+      });
+
+      localStorage.setItem(`shop_settings_${SHOP_ID}`, JSON.stringify(currentShopSettings));
+      alert("የሱቅ መረጃዎችና ዋጋዎች በተሳካ ሁኔታ ተቀምጠዋል!");
+      loadShopData();
+      renderCart();
+      document.getElementById("adminPanel").style.display = "none";
+    }
 
     document.getElementById("orderForm").addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -371,37 +737,45 @@
       submitBtn.innerText = "ትዕዛዙ እየተላከ ነው...";
       submitBtn.disabled = true;
 
-      const itemName = document.getElementById("itemName").value;
-      const itemQty = document.getElementById("itemQty").value;
+      let orderItemsText = "";
+      let subTotal = 0;
+      Object.keys(cart).forEach(id => {
+        const item = currentShopSettings.catalog.find(i => i.id == id);
+        const line = item.price * cart[id];
+        subTotal += line;
+        orderItemsText += `• ${item.name} x ${cart[id]} (${line} ብር)\n`;
+      });
+
       const blockNo = document.getElementById("blockNo").value;
       const floorNo = document.getElementById("floorNo").value;
       const houseNo = document.getElementById("houseNo").value;
       const phone = document.getElementById("customerPhone").value;
       const time = document.getElementById("deliveryTime").value;
       const payment = document.getElementById("paymentMethod").value;
-      const notes = document.getElementById("orderNotes").value || "የለም";
       const txId = document.getElementById("transactionId").value || "አልተጠቀሰም";
       const receiptFile = document.getElementById("receiptFile").files[0];
 
-      let urgentFeeText = time.includes("በጣም አጣዳፊ") ? "\n⚡ ተጨማሪ ክፍያ: +25 ብር (አጣዳፊ)" : "";
+      let urgentFee = time.includes("በጣም አጣዳፊ") ? 25 : 0;
+      let totalToPay = subTotal + urgentFee;
 
-      let caption = `🛒 አዲስ ትዕዛዝ ደርሶዎታል!\n\n` +
-                    `📦 እቃ: ${itemName}\n` +
-                    `🔢 ብዛት: ${itemQty}\n\n` +
+      let caption = `🛒 አዲስ ትዕዛዝ (${currentShopSettings.name})\n\n` +
+                    `📦 የታዘዙ እቃዎች:\n${orderItemsText}\n` +
+                    `💰 የእቃዎች ድምር: ${subTotal} ብር\n` +
+                    (urgentFee > 0 ? `⚡ አጣዳፊ ማድረሻ: +25 ብር\n` : "") +
+                    `💵 ጠቅላላ ክፍያ: ${totalToPay} ብር\n\n` +
                     `📍 አድራሻ:\n` +
                     `• ብሎክ: ${blockNo}\n` +
                     `• ደረጃ: ${floorNo}\n` +
                     `• የቤት ቁጥር: ${houseNo}\n` +
                     `📞 ስልክ: ${phone}\n\n` +
-                    `⏰ ሰዓት: ${time}${urgentFeeText}\n` +
+                    `⏰ ሰዓት: ${time}\n` +
                     `💳 ክፍያ: ${payment}\n` +
-                    `🔗 Transaction ID/Link: ${txId}\n` +
-                    `📝 ማስታወሻ: ${notes}`;
+                    `🔗 Tx ID / Link: ${txId}`;
 
       try {
         if (receiptFile) {
           const formData = new FormData();
-          formData.append("chat_id", CHAT_ID);
+          formData.append("chat_id", currentShopSettings.chatId);
           formData.append("caption", caption);
           formData.append("photo", receiptFile);
 
@@ -414,7 +788,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              chat_id: CHAT_ID,
+              chat_id: currentShopSettings.chatId,
               text: caption
             })
           });
@@ -423,11 +797,13 @@
         document.getElementById("orderForm").style.display = "none";
         document.getElementById("successAlert").style.display = "block";
       } catch (err) {
-        alert("ትዕዛዙን በመላክ ላይ ችግር ተፈጥሯል፤ እባክዎ በድጋሚ ይሞክሩ።");
+        alert("ትዕዛዝ መላክ አልተቻለም፤ Chat ID በትክክል መሙላቱን ያረጋግጡ።");
         submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
         submitBtn.disabled = false;
       }
     });
+
+    loadShopData();
   </script>
 </body>
 </html>
