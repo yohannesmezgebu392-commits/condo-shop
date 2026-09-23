@@ -145,6 +145,14 @@
       width: 100%;
     }
 
+    .custom-add-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed #334155;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
     .card {
       background: var(--card);
       border: 1px solid var(--card-border);
@@ -367,14 +375,6 @@
       cursor: pointer;
       margin-top: 10px;
     }
-
-    .custom-add-box {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px dashed #334155;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 14px;
-    }
   </style>
 </head>
 <body>
@@ -458,8 +458,9 @@
         <div class="form-group">
           <label>የማድረሻ ሰዓት</label>
           <select id="deliveryTime" onchange="calculateTotals()">
-            <option value="በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)" selected>በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)</option>
-            <option value="መደበኛ (በ30-45 ደቂቃ ውስጥ)">መደበኛ (በ30-45 ደቂቃ ውስጥ)</option>
+            <option value="በጣም አጣዳፊ (ከ15-25 ደቂቃ ውስጥ)" selected>በጣም አጣዳፊ (ከ15-25 ደቂቃ ውስጥ)</option>
+            <option value="መደበኛ (ከ45-1:00 ሰዓት ውስጥ)">መደበኛ (ከ45-1:00 ሰዓት ውስጥ)</option>
+            <option value="በ3 ሰዓት ውስጥ">በ3 ሰዓት ውስጥ</option>
           </select>
           <div id="urgentNotice" class="notice-urgent">
             ⚡ ለአጣዳፊ ትዕዛዝ ለሱቁ +25 ብር ተጨማሪ የማድረሻ ክፍያ ይታሰባል።
@@ -500,7 +501,7 @@
       ✅ ትዕዛዝዎ በተሳካ ሁኔታ ደርሷል! እቃው በደቂቃዎች ውስጥ ይደርስዎታል።
     </div>
 
-    <!-- የባለሱቅ ማስተካከያ ክፍል (በይለፍ ቃል የተቆለፈ) -->
+    <!-- የባለሱቅ ማስተካከያ ክፍል -->
     <div class="admin-toggle">
       <button type="button" class="btn-admin" onclick="promptAdminLogin()">🔒 የሱቅ ዋጋና መረጃ ማስተካከያ (ለባለሱቁ)</button>
     </div>
@@ -530,8 +531,8 @@
     const SHOP_ID = urlParams.get('shop') || 'default_shop';
 
     const BOT_TOKEN = "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q";
+    const DEFAULT_CHAT_ID = "1230396565"; // ትክክለኛው የቴሌግራም ID
 
-    // 9 ተወዳጅ ነባሪ እቃዎች
     const defaultCatalog = [
       { id: 1, name: "እንጀራ (ፍሬ)", icon: "🫓", price: 30 },
       { id: 2, name: "የታሸገ ውሃ (2L)", icon: "💧", price: 45 },
@@ -547,18 +548,31 @@
     let currentShopSettings = {
       name: "ያብስራ ሱቅ",
       telebirr: "0948622684",
-      chatId: "1230396565", // ትክክለኛው ያንተ Chat ID
+      chatId: DEFAULT_CHAT_ID,
       catalog: defaultCatalog
     };
 
     let cart = {};
-    let customItems = []; // ከካታሎግ ውጭ የታዘዙ
+    let customItems = [];
 
     function loadShopData() {
       const saved = localStorage.getItem(`shop_settings_${SHOP_ID}`);
       if (saved) {
-        currentShopSettings = JSON.parse(saved);
+        try {
+          const parsed = JSON.parse(saved);
+          // የድሮውን የተሳሳተ የባንክ ቁጥር በራስ-ሰር አስተካክል
+          if (!parsed.chatId || parsed.chatId === "1000111021841") {
+            parsed.chatId = DEFAULT_CHAT_ID;
+            localStorage.setItem(`shop_settings_${SHOP_ID}`, JSON.stringify(parsed));
+          }
+          currentShopSettings = parsed;
+        } catch (e) {
+          currentShopSettings.chatId = DEFAULT_CHAT_ID;
+        }
+      } else {
+        currentShopSettings.chatId = DEFAULT_CHAT_ID;
       }
+
       document.getElementById("shopBadge").innerText = `🏪 ሱቅ፦ ${currentShopSettings.name}`;
       document.getElementById("accountNumber").innerText = currentShopSettings.telebirr;
       renderCatalog();
@@ -630,7 +644,6 @@
 
       let itemsTotal = 0;
 
-      // ካታሎግ እቃዎች
       catalogKeys.forEach(id => {
         const item = currentShopSettings.catalog.find(i => i.id == id);
         const qty = cart[id];
@@ -652,13 +665,12 @@
         `;
       });
 
-      // ተጨማሪ እቃዎች
       customItems.forEach((cItem, idx) => {
         container.innerHTML += `
           <div class="cart-item">
             <div>
               <strong>✨ ${cItem.name}</strong> (${cItem.qty})<br>
-              <span style="font-size:0.75rem; color:#fde68a;">ዋጋው ባለሱቁ ጋር ሲደርስ ይታሰባል</span>
+              <span style="font-size:0.75rem; color:#fde68a;">ዋጋው በሱቁ ይታሰባል</span>
             </div>
             <div>
               <button type="button" class="btn-qty" style="background:#ef4444;" onclick="removeCustomItem(${idx})">✕</button>
@@ -700,7 +712,6 @@
       const submitBtn = document.getElementById("submitBtn");
       const minAlert = document.getElementById("minOrderAlert");
 
-      // ተጨማሪ እቃ ከተጨመረ ወይም ድምሩ ከ100 በላይ ከሆነ ይፈቀዳል
       if (sub < 100 && customItems.length === 0 && Object.keys(cart).length > 0) {
         submitBtn.disabled = true;
         minAlert.style.display = "block";
@@ -735,13 +746,12 @@
       alert("ቁጥሩ ኮፒ ተደርጓል: " + acc);
     }
 
-    // የባለሱቅ ክፍል - በይለፍ ቃል (Password) የተጠበቀ
     function promptAdminLogin() {
       const pin = prompt("እባክዎ የባለሱቁን ሚስጥር ቁጥር (PIN) ያስገቡ፦");
       if (pin === "1234") {
         toggleAdminPanel();
       } else if (pin !== null) {
-        alert("የተሳሳተ የይለፍ ቃል ነው! ይህ ክፍል ለሱቁ ባለቤት ብቻ የተፈቀደ ነው።");
+        alert("የተሳሳተ የይለፍ ቃል ነው!");
       }
     }
 
@@ -769,7 +779,7 @@
     function saveSettings() {
       currentShopSettings.name = document.getElementById("settingShopName").value;
       currentShopSettings.telebirr = document.getElementById("settingTelebirr").value;
-      currentShopSettings.chatId = document.getElementById("settingChatId").value;
+      currentShopSettings.chatId = document.getElementById("settingChatId").value || DEFAULT_CHAT_ID;
 
       currentShopSettings.catalog.forEach(item => {
         const inp = document.getElementById(`price_item_${item.id}`);
@@ -832,32 +842,43 @@
                     `💳 ክፍያ: ${payment}\n` +
                     `🔗 Tx ID / Link: ${txId}`;
 
+      const targetChatId = currentShopSettings.chatId || DEFAULT_CHAT_ID;
+
       try {
+        let response;
         if (receiptFile) {
           const formData = new FormData();
-          formData.append("chat_id", currentShopSettings.chatId);
+          formData.append("chat_id", targetChatId);
           formData.append("caption", caption);
           formData.append("photo", receiptFile);
 
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+          response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
             method: "POST",
             body: formData
           });
         } else {
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              chat_id: currentShopSettings.chatId,
+              chat_id: targetChatId,
               text: caption
             })
           });
         }
 
-        document.getElementById("orderForm").style.display = "none";
-        document.getElementById("successAlert").style.display = "block";
+        const data = await response.json();
+
+        if (data.ok) {
+          document.getElementById("orderForm").style.display = "none";
+          document.getElementById("successAlert").style.display = "block";
+        } else {
+          alert("ቴሌግራም ስህተት አሳይቷል፦ " + data.description + "\n(Chat ID: " + targetChatId + ")");
+          submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
+          submitBtn.disabled = false;
+        }
       } catch (err) {
-        alert("ትዕዛዝ መላክ አልተቻለም፤ እባክዎ ቦቱ መከፈቱን ያረጋግጡ።");
+        alert("ትዕዛዝ መላክ አልተቻለም፤ ኢንተርኔትዎን ያረጋግጡ።");
         submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
         submitBtn.disabled = false;
       }
