@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>የኮንዶሚኒየም ባለብዙ ሱቅ ማዘዣ ገጽ</title>
+  <title>የኮንዶሚኒየም ፈጣን ማዘዣ ገጽ</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;700;800&display=swap');
 
@@ -92,12 +92,11 @@
       gap: 6px;
     }
 
-    /* 9 እቃዎች ግሪድ */
     .catalog-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .item-card {
@@ -318,7 +317,6 @@
       font-weight: 700;
     }
 
-    /* የባለሱቅ ማስተካከያ ክፍል */
     .admin-toggle {
       margin-top: 24px;
       text-align: center;
@@ -341,12 +339,6 @@
       border-radius: 10px;
       padding: 14px;
       margin-top: 12px;
-    }
-
-    .admin-panel h3 {
-      font-size: 0.85rem;
-      color: #38bdf8;
-      margin-bottom: 8px;
     }
 
     .price-input-row {
@@ -375,6 +367,14 @@
       cursor: pointer;
       margin-top: 10px;
     }
+
+    .custom-add-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed #334155;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
   </style>
 </head>
 <body>
@@ -391,8 +391,18 @@
     </div>
 
     <!-- 9 እቃዎች -->
-    <div class="section-label">🛒 ተወዳጅ እቃዎች (መምረጥ ይችላሉ)</div>
+    <div class="section-label">🛒 ተወዳጅ እቃዎች</div>
     <div class="catalog-grid" id="catalogGrid"></div>
+
+    <!-- ከዝርዝሩ ውጪ ያለ እቃ መጻፊያ -->
+    <div class="custom-add-box">
+      <div style="font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:6px;">✍️ እዚህ ውስጥ የሌለ ሌላ እቃ ይፈልጋሉ?</div>
+      <div class="row">
+        <input type="text" id="customItemName" placeholder="የእቃው ስም (ምሳሌ፦ አጃ)" style="flex:2;">
+        <input type="text" id="customItemQty" placeholder="መጠን (ምሳሌ፦ 1 ፓኬት)" style="flex:1;">
+        <button type="button" class="btn-add" onclick="addCustomItem()" style="flex:1;">+ ጨምር</button>
+      </div>
+    </div>
 
     <form id="orderForm">
       <!-- የተመረጡ እቃዎች ቅርጫት -->
@@ -490,13 +500,13 @@
       ✅ ትዕዛዝዎ በተሳካ ሁኔታ ደርሷል! እቃው በደቂቃዎች ውስጥ ይደርስዎታል።
     </div>
 
-    <!-- የባለሱቅ ማስተካከያ (Admin / Settings) -->
+    <!-- የባለሱቅ ማስተካከያ ክፍል (በይለፍ ቃል የተቆለፈ) -->
     <div class="admin-toggle">
-      <button type="button" class="btn-admin" onclick="toggleAdminPanel()">⚙️ የሱቅ ዋጋና መረጃ ማስተካከያ</button>
+      <button type="button" class="btn-admin" onclick="promptAdminLogin()">🔒 የሱቅ ዋጋና መረጃ ማስተካከያ (ለባለሱቁ)</button>
     </div>
 
     <div id="adminPanel" class="admin-panel">
-      <h3>⚙️ የሱቅ መረጃዎችን መቀየሪያ (ባለሱቁ ብቻ)</h3>
+      <h3 style="color:#38bdf8; font-size:0.85rem; margin-bottom:8px;">⚙️ የሱቅ መረጃዎችን መቀየሪያ</h3>
       <div class="form-group">
         <label>የሱቁ ስም</label>
         <input type="text" id="settingShopName">
@@ -506,7 +516,7 @@
         <input type="text" id="settingTelebirr">
       </div>
       <div class="form-group">
-        <label>የቴሌግራም Chat ID (ከ @userinfobot)</label>
+        <label>የቴሌግራም Chat ID</label>
         <input type="text" id="settingChatId">
       </div>
       <h4 style="font-size:0.8rem; color:#fde68a; margin:8px 0;">የ 9ኙ እቃዎች ዋጋ ማስተካከያ (ብር)፦</h4>
@@ -516,7 +526,6 @@
   </div>
 
   <script>
-    // URL Parameter (?shop=yoya) መለየት
     const urlParams = new URLSearchParams(window.location.search);
     const SHOP_ID = urlParams.get('shop') || 'default_shop';
 
@@ -538,11 +547,12 @@
     let currentShopSettings = {
       name: "ያብስራ ሱቅ",
       telebirr: "0948622684",
-      chatId: "1000111021841",
+      chatId: "1230396565", // ትክክለኛው ያንተ Chat ID
       catalog: defaultCatalog
     };
 
     let cart = {};
+    let customItems = []; // ከካታሎግ ውጭ የታዘዙ
 
     function loadShopData() {
       const saved = localStorage.getItem(`shop_settings_${SHOP_ID}`);
@@ -583,12 +593,31 @@
       renderCart();
     }
 
+    function addCustomItem() {
+      const name = document.getElementById("customItemName").value.trim();
+      const qty = document.getElementById("customItemQty").value.trim() || "1";
+      if (!name) {
+        alert("እባክዎ የእቃውን ስም ያስገቡ!");
+        return;
+      }
+      customItems.push({ name, qty });
+      document.getElementById("customItemName").value = "";
+      document.getElementById("customItemQty").value = "";
+      renderCart();
+    }
+
+    function removeCustomItem(idx) {
+      customItems.splice(idx, 1);
+      renderCart();
+    }
+
     function renderCart() {
       const container = document.getElementById("cartItemsContainer");
-      const keys = Object.keys(cart);
-      document.getElementById("cartCount").innerText = keys.length;
+      const catalogKeys = Object.keys(cart);
+      const totalCount = catalogKeys.length + customItems.length;
+      document.getElementById("cartCount").innerText = totalCount;
 
-      if (keys.length === 0) {
+      if (totalCount === 0) {
         container.innerHTML = `<p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም፤ ከላይ «+» ይጫኑ</p>`;
         document.getElementById("cartSummarySection").style.display = "none";
         document.getElementById("submitBtn").disabled = true;
@@ -601,7 +630,8 @@
 
       let itemsTotal = 0;
 
-      keys.forEach(id => {
+      // ካታሎግ እቃዎች
+      catalogKeys.forEach(id => {
         const item = currentShopSettings.catalog.find(i => i.id == id);
         const qty = cart[id];
         const lineTotal = item.price * qty;
@@ -617,6 +647,21 @@
               <button type="button" class="btn-qty" onclick="changeQty(${item.id}, -1)">-</button>
               <span>${qty}</span>
               <button type="button" class="btn-qty" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      // ተጨማሪ እቃዎች
+      customItems.forEach((cItem, idx) => {
+        container.innerHTML += `
+          <div class="cart-item">
+            <div>
+              <strong>✨ ${cItem.name}</strong> (${cItem.qty})<br>
+              <span style="font-size:0.75rem; color:#fde68a;">ዋጋው ባለሱቁ ጋር ሲደርስ ይታሰባል</span>
+            </div>
+            <div>
+              <button type="button" class="btn-qty" style="background:#ef4444;" onclick="removeCustomItem(${idx})">✕</button>
             </div>
           </div>
         `;
@@ -655,10 +700,11 @@
       const submitBtn = document.getElementById("submitBtn");
       const minAlert = document.getElementById("minOrderAlert");
 
-      if (sub < 100 && Object.keys(cart).length > 0) {
+      // ተጨማሪ እቃ ከተጨመረ ወይም ድምሩ ከ100 በላይ ከሆነ ይፈቀዳል
+      if (sub < 100 && customItems.length === 0 && Object.keys(cart).length > 0) {
         submitBtn.disabled = true;
         minAlert.style.display = "block";
-      } else if (Object.keys(cart).length > 0) {
+      } else if (Object.keys(cart).length > 0 || customItems.length > 0) {
         submitBtn.disabled = false;
         minAlert.style.display = "none";
       }
@@ -689,13 +735,20 @@
       alert("ቁጥሩ ኮፒ ተደርጓል: " + acc);
     }
 
-    // ባለሱቅ Settings
+    // የባለሱቅ ክፍል - በይለፍ ቃል (Password) የተጠበቀ
+    function promptAdminLogin() {
+      const pin = prompt("እባክዎ የባለሱቁን ሚስጥር ቁጥር (PIN) ያስገቡ፦");
+      if (pin === "1234") {
+        toggleAdminPanel();
+      } else if (pin !== null) {
+        alert("የተሳሳተ የይለፍ ቃል ነው! ይህ ክፍል ለሱቁ ባለቤት ብቻ የተፈቀደ ነው።");
+      }
+    }
+
     function toggleAdminPanel() {
       const p = document.getElementById("adminPanel");
+      p.style.display = (p.style.display === "block") ? "none" : "block";
       if (p.style.display === "block") {
-        p.style.display = "none";
-      } else {
-        p.style.display = "block";
         document.getElementById("settingShopName").value = currentShopSettings.name;
         document.getElementById("settingTelebirr").value = currentShopSettings.telebirr;
         document.getElementById("settingChatId").value = currentShopSettings.chatId;
@@ -746,6 +799,13 @@
         orderItemsText += `• ${item.name} x ${cart[id]} (${line} ብር)\n`;
       });
 
+      if (customItems.length > 0) {
+        orderItemsText += `\n✨ ተጨማሪ የታዘዙ እቃዎች:\n`;
+        customItems.forEach(ci => {
+          orderItemsText += `• ${ci.name} (${ci.qty})\n`;
+        });
+      }
+
       const blockNo = document.getElementById("blockNo").value;
       const floorNo = document.getElementById("floorNo").value;
       const houseNo = document.getElementById("houseNo").value;
@@ -762,7 +822,7 @@
                     `📦 የታዘዙ እቃዎች:\n${orderItemsText}\n` +
                     `💰 የእቃዎች ድምር: ${subTotal} ብር\n` +
                     (urgentFee > 0 ? `⚡ አጣዳፊ ማድረሻ: +25 ብር\n` : "") +
-                    `💵 ጠቅላላ ክፍያ: ${totalToPay} ብር\n\n` +
+                    `💵 ጠቅላላ ክፍያ: ${totalToPay} ብር` + (customItems.length > 0 ? " (+ ተጨማሪ እቃዎች ዋጋ)" : "") + `\n\n` +
                     `📍 አድራሻ:\n` +
                     `• ብሎክ: ${blockNo}\n` +
                     `• ደረጃ: ${floorNo}\n` +
@@ -797,7 +857,7 @@
         document.getElementById("orderForm").style.display = "none";
         document.getElementById("successAlert").style.display = "block";
       } catch (err) {
-        alert("ትዕዛዝ መላክ አልተቻለም፤ Chat ID በትክክል መሙላቱን ያረጋግጡ።");
+        alert("ትዕዛዝ መላክ አልተቻለም፤ እባክዎ ቦቱ መከፈቱን ያረጋግጡ።");
         submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
         submitBtn.disabled = false;
       }
