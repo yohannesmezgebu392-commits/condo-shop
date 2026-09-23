@@ -208,7 +208,7 @@
       margin-bottom: 5px;
     }
 
-    input, select, textarea {
+    input, select {
       width: 100%;
       background: #0b1329;
       border: 1px solid var(--card-border);
@@ -495,7 +495,7 @@
         <input type="text" id="settingChatId">
       </div>
       <div class="form-group">
-        <label>የቴሌግራም Bot Token (ከ @BotFather)</label>
+        <label>የቴሌግራም Bot Token</label>
         <input type="text" id="settingBotToken">
       </div>
       <h4 style="font-size:0.8rem; color:#fde68a; margin:8px 0;">የ 9ኙ እቃዎች ዋጋ (ብር)፦</h4>
@@ -507,6 +507,10 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const SHOP_ID = urlParams.get('shop') || 'default_shop';
+
+    // አዲሱ ትክክለኛ BOT_TOKEN እና CHAT_ID
+    const DEFAULT_BOT_TOKEN = "8516306659:AAFh9eIW6Kw6jb7j-okK-SjfqGlBNla_3eM";
+    const DEFAULT_CHAT_ID = "1230396565";
 
     const defaultCatalog = [
       { id: 1, name: "እንጀራ (ፍሬ)", icon: "🫓", price: 30 },
@@ -523,8 +527,8 @@
     let currentShopSettings = {
       name: "ያብስራ ሱቅ",
       telebirr: "0948622684",
-      chatId: "1230396565",
-      botToken: "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q",
+      chatId: DEFAULT_CHAT_ID,
+      botToken: DEFAULT_BOT_TOKEN,
       catalog: defaultCatalog
     };
 
@@ -536,9 +540,15 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (!parsed.chatId || parsed.chatId === "1000111021841") parsed.chatId = "1230396565";
+          // ሁልጊዜ አዲሱን ቶከን እና ቻት አይዲ ማረጋገጥ
+          parsed.botToken = DEFAULT_BOT_TOKEN;
+          if (!parsed.chatId || parsed.chatId === "1000111021841") parsed.chatId = DEFAULT_CHAT_ID;
           currentShopSettings = parsed;
-        } catch (e) {}
+          localStorage.setItem(`shop_settings_${SHOP_ID}`, JSON.stringify(parsed));
+        } catch (e) {
+          currentShopSettings.botToken = DEFAULT_BOT_TOKEN;
+          currentShopSettings.chatId = DEFAULT_CHAT_ID;
+        }
       }
 
       document.getElementById("shopBadge").innerText = `🏪 ሱቅ፦ ${currentShopSettings.name}`;
@@ -683,7 +693,6 @@
         notice.innerText = "";
       }
 
-      // እቃ ካለ ማዘዣ ቁልፉ ክፍት ይሆናል
       const totalCount = Object.keys(cart).length + customItems.length;
       document.getElementById("submitBtn").disabled = (totalCount === 0);
     }
@@ -747,8 +756,8 @@
     function saveSettings() {
       currentShopSettings.name = document.getElementById("settingShopName").value;
       currentShopSettings.telebirr = document.getElementById("settingTelebirr").value;
-      currentShopSettings.chatId = document.getElementById("settingChatId").value || "1230396565";
-      currentShopSettings.botToken = document.getElementById("settingBotToken").value || currentShopSettings.botToken;
+      currentShopSettings.chatId = document.getElementById("settingChatId").value || DEFAULT_CHAT_ID;
+      currentShopSettings.botToken = document.getElementById("settingBotToken").value || DEFAULT_BOT_TOKEN;
 
       currentShopSettings.catalog.forEach(item => {
         const inp = document.getElementById(`price_item_${item.id}`);
@@ -811,8 +820,8 @@
                     `💳 ክፍያ: ${payment}\n` +
                     `🔗 Tx ID / Link: ${txId}`;
 
-      const activeToken = currentShopSettings.botToken;
-      const activeChatId = currentShopSettings.chatId;
+      const activeToken = currentShopSettings.botToken || DEFAULT_BOT_TOKEN;
+      const activeChatId = currentShopSettings.chatId || DEFAULT_CHAT_ID;
 
       try {
         let response;
@@ -843,7 +852,7 @@
           document.getElementById("orderForm").style.display = "none";
           document.getElementById("successAlert").style.display = "block";
         } else {
-          alert("ቴሌግራም ስህተት አሳይቷል፦ " + data.description + "\n\nምክንያት፦ Bot Token ተሳስቷል ወይም ተሰርዟል። እባክዎ BotFather ላይ አዲስ Token ያረጋግጡ።");
+          alert("ቴሌግራም ስህተት አሳይቷል፦ " + data.description);
           submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
           submitBtn.disabled = false;
         }
