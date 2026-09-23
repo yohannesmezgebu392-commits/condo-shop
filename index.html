@@ -1,381 +1,433 @@
-
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="am">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>የኮንዶሚኒየም ፈጣን ማዘዣ</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;700;800&display=swap');
+
     :root {
-      --primary: #10b981;
       --bg: #0f172a;
-      --card-bg: #1e293b;
-      --card-inner: #0f172a;
-      --border: #334155;
+      --card: #1e293b;
+      --accent: #10b981;
+      --accent-hover: #059669;
       --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
+      --muted: #94a3b8;
+      --border: #334155;
+      --warning: #f59e0b;
+      --blue: #0284c7;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
-    header {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      color: white;
-      padding: 24px 20px;
-      border-bottom-left-radius: 26px;
-      border-bottom-right-radius: 26px;
-      text-align: center;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .container { max-width: 520px; margin: 0 auto; padding: 18px 14px; }
-    .section-title { font-size: 1.05rem; font-weight: 700; margin: 16px 0 12px 2px; color: var(--accent); }
-    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px; }
-    .product-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      padding: 16px 12px;
+      min-height: 100vh;
     }
-    .product-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .product-icon { font-size: 1.8rem; background: var(--card-inner); width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
-    .product-info { flex: 1; }
-    .product-name { font-size: 0.9rem; font-weight: 700; }
-    .product-price { font-size: 0.85rem; color: #34d399; font-weight: 700; }
-    .btn-quick-add {
+
+    .container {
       width: 100%;
-      background: rgba(16, 185, 129, 0.12);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      border-radius: 8px;
-      padding: 6px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
+      max-width: 480px;
     }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    .header p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
     .card {
-      background: var(--card-bg);
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 16px;
+      background: var(--card);
       border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
     }
-    .card-title { font-size: 0.98rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
-    .form-group { margin-bottom: 12px; }
-    .form-row { display: flex; gap: 10px; }
-    .form-row .form-group { flex: 1; }
-    label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
-    input, textarea, select {
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    input, select, textarea {
       width: 100%;
-      background: var(--card-inner);
+      background: #0b1329;
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 11px 12px;
-      border-radius: 10px;
-      font-size: 0.92rem;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
       outline: none;
+      transition: border-color 0.2s;
     }
-    textarea { resize: vertical; min-height: 65px; }
 
-    /* የክፍያ መረጃ ሳጥን */
-    .pay-details-box {
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px dashed var(--accent);
-      border-radius: 12px;
+    input:focus, select:focus, textarea:focus {
+      border-color: #38bdf8;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    .notice-urgent {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--warning);
+      color: #fde68a;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      margin-top: 6px;
+      display: none;
+      font-weight: 600;
+    }
+
+    .payment-box {
+      border: 1px dashed #38bdf8;
+      background: rgba(2, 132, 199, 0.08);
+      border-radius: 8px;
       padding: 14px;
       margin-top: 10px;
-      display: none;
     }
-    .pay-details-header { font-size: 0.84rem; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
-    .pay-holder-name { font-size: 0.82rem; color: #cbd5e1; margin-bottom: 8px; }
-    .pay-account-row { display: flex; justify-content: space-between; align-items: center; background: var(--card-inner); padding: 9px 12px; border-radius: 8px; }
-    .pay-acc-number { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
-    .btn-copy {
-      background: var(--accent);
-      color: #0f172a;
-      border: none;
-      padding: 6px 14px;
+
+    .pay-header {
+      font-size: 0.85rem;
+      color: #7dd3fc;
+      font-weight: 700;
+    }
+
+    .pay-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .account-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      padding: 8px 12px;
       border-radius: 6px;
-      font-size: 0.78rem;
+      margin-bottom: 12px;
+    }
+
+    .account-number {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: white;
+    }
+
+    .btn-copy {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
     }
 
     .btn-submit {
       width: 100%;
-      background: var(--primary);
+      background: var(--accent);
       color: white;
       border: none;
-      padding: 15px;
-      border-radius: 14px;
-      font-size: 1.05rem;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 1.1rem;
       font-weight: 800;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: background 0.2s;
     }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-    #statusMessage {
-      text-align: center;
-      padding: 12px;
-      margin-top: 14px;
-      border-radius: 10px;
-      font-weight: 700;
+
+    .btn-submit:hover {
+      background: var(--accent-hover);
+    }
+
+    .success-alert {
       display: none;
+      background: #064e3b;
+      border: 1px solid #059669;
+      color: #a7f3d0;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-top: 14px;
+    }
+
+    .divider-text {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 8px 0;
+      position: relative;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>የኮንዶሚኒየም ሱቅ</h1>
-    <p>የእለት ተእለት ፍላጎትዎን ይዘዙ፤ በደቂቃዎች ውስጥ እናደርሳለን!</p>
-  </header>
-
   <div class="container">
-    <div class="section-title">🔥 ተወዳጅ እቃዎች (ነክተው ይጨምሩ)</div>
-    <div class="product-grid" id="productGrid"></div>
+    <div class="header">
+      <h1>የኮንዶሚኒየም ፈጣን ማዘዣ</h1>
+      <p>ትዕዛዝዎን ይላኩ፤ በደቂቃዎች ውስጥ ደጃፍዎ እናደርሳለን</p>
+    </div>
 
-    <form id="orderForm" onsubmit="handleOrder(event)">
+    <form id="orderForm">
+      <!-- የእቃ መረጃ -->
       <div class="card">
-        <div class="card-title">📝 የሚፈልጉት እቃ ዝርዝር</div>
+        <div class="card-title">📦 የሚፈልጉት እቃ ዝርዝር</div>
         <div class="form-group">
-          <label>የሚፈልጉት እቃ</label>
-          <textarea id="items" placeholder="ለምሳሌ፦ 10 እንጀራ፣ 1 ኪሎ ምስር..." required></textarea>
+          <label>የእቃው ስም</label>
+          <input type="text" id="itemName" placeholder="ምሳሌ፦ እንጀራ፣ ዘይት፣ ውሃ..." required>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>ጠቅላላ ብዛት</label>
-            <input type="text" id="quantity" placeholder="ምሳሌ፦ 10 ፍሬ" required>
-          </div>
-          <div class="form-group">
-            <label>የተገመተ ዋጋ (ብር)</label>
-            <input type="text" id="estimatedPrice" placeholder="ምሳሌ፦ 300 ብር">
-          </div>
+        <div class="form-group">
+          <label>ብዛት / መጠን</label>
+          <input type="text" id="itemQty" placeholder="ምሳሌ፦ 5 ፍሬ ወይም 1 ሊትር" required>
         </div>
       </div>
 
+      <!-- አድራሻ -->
       <div class="card">
-        <div class="card-title">📍 የመድረሻ አድራሻ</div>
-        <div class="form-row">
+        <div class="card-title">📍 የት ይድረስልዎ? (አድራሻ)</div>
+        <div class="row">
           <div class="form-group">
             <label>ብሎክ</label>
-            <input type="text" id="block" placeholder="ምሳሌ፦ 45" required>
+            <input type="text" id="blockNo" placeholder="ምሳሌ፡ 7" required>
           </div>
           <div class="form-group">
-            <label>ደረጃ</label>
-            <input type="text" id="floor" placeholder="ምሳሌ፦ 3" required>
+            <label>ፎቅ (ደረጃ)</label>
+            <input type="text" id="floorNo" placeholder="ምሳሌ፡ 3" required>
           </div>
           <div class="form-group">
             <label>የቤት ቁጥር</label>
-            <input type="text" id="houseNo" placeholder="ምሳሌ፦ 909" required>
+            <input type="text" id="houseNo" placeholder="ምሳሌ፡ 12" required>
           </div>
         </div>
         <div class="form-group">
-          <label>ስልክ ቁጥር</label>
-          <input type="tel" id="phone" placeholder="ምሳሌ፦ 0911223344" required>
+          <label>ስልክ ቁጥርዎ</label>
+          <input type="tel" id="customerPhone" placeholder="ምሳሌ፡ 09..." required>
         </div>
       </div>
 
+      <!-- ሰዓት እና ክፍያ -->
       <div class="card">
         <div class="card-title">⏰ ሰዓት እና የክፍያ አማራጭ</div>
+
         <div class="form-group">
           <label>ለስንት ሰዓት ይድረስልዎ?</label>
-          <select id="deliveryTime" required>
-            <option value="በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)">በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)</option>
-            <option value="በ1 ሰዓት ውስጥ">በ1 ሰዓት ውስጥ</option>
-            <option value="ከሰዓት (ከቀኑ 8:00 - 10:00)">ከሰዓት (ከቀኑ 8:00 - 10:00)</option>
-            <option value="ምሽት (ከምሽቱ 12:00 - 2:00)">ምሽት (ከምሽቱ 12:00 - 2:00)</option>
+          <select id="deliveryTime" onchange="toggleUrgentNotice()">
+            <option value="በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)" selected>በጣም አጣዳፊ (በ15-20 ደቂቃ ውስጥ)</option>
+            <option value="መደበኛ (በ30-45 ደቂቃ ውስጥ)">መደበኛ (በ30-45 ደቂቃ ውስጥ)</option>
+            <option value="በተወሰነ ሰዓት (ቀጠሮ)">በተወሰነ ሰዓት (ቀጠሮ)</option>
           </select>
+          <div id="urgentNotice" class="notice-urgent">
+            ⚡ ለአጣዳፊ ትዕዛዝ ለሱቁ +25 ብር ተጨማሪ የማድረሻ ክፍያ ይታሰባል።
+          </div>
         </div>
-        
+
         <div class="form-group">
           <label>በምን ይከፍላሉ?</label>
-          <select id="paymentMethod" onchange="togglePaymentBox()" required>
-            <option value="እጅ በእጅ (Cash on Delivery)">እጅ በእጅ (Cash on Delivery)</option>
-            <option value="ቴሌብር (Telebirr)">ቴሌብር (Telebirr)</option>
-            <option value="ሲቢኢ ብር / ንግድ ባንክ (CBE)">ሲቢኢ ብር / ንግድ ባንክ (CBE)</option>
+          <select id="paymentMethod" onchange="updatePaymentDetails()">
+            <option value="Telebirr">ቴሌብር (Telebirr)</option>
+            <option value="CBE">የኢትዮጵያ ንግድ ባንክ (CBE)</option>
+            <option value="Cash">በእጅ (Cash on Delivery)</option>
           </select>
         </div>
 
-        <!-- ክፍያ ሲመረጥ የሚወጣ ሳጥን -->
-        <div class="pay-details-box" id="payBox">
-          <div class="pay-details-header" id="payInstruction">ክፍያ የሚፈጽሙበት ሂሳብ፦</div>
-          <div class="pay-holder-name" id="payHolderName">ስም፡ ዮሐንስ መዝገቡ</div>
-          <div class="pay-account-row">
-            <span class="pay-acc-number" id="payNumberText">1000111021841</span>
-            <button type="button" class="btn-copy" onclick="copyPayNumber()">ኮፒ አድርግ 📋</button>
+        <!-- ዲጂታል ክፍያ ሳጥን -->
+        <div id="paymentBox" class="payment-box">
+          <div id="payHeader" class="pay-header">የቴሌብር ስልክ ቁጥር፦</div>
+          <div id="paySub" class="pay-sub">የሂሳብ ስም፦ ዮሐንስ</div>
+
+          <div class="account-badge">
+            <span id="accountNumber" class="account-number">0948622684</span>
+            <button type="button" class="btn-copy" onclick="copyAccount()">ኮፒ አድርግ 📋</button>
           </div>
-          
-          <div class="form-group" style="margin-top: 14px; margin-bottom: 4px;">
-            <label style="color: #cbd5e1;">የከፈሉበት ስክሪንሾት (ደረሰኝ) ካለ ያያይዙ፦</label>
-            <input type="file" id="receiptImage" accept="image/*" style="padding: 7px; background: transparent;">
+
+          <div class="form-group">
+            <label>የከፈሉበት ስክሪንሾት (ደረሰኝ) ካለ ያያይዙ፦</label>
+            <input type="file" id="receiptFile" accept="image/*">
+          </div>
+
+          <div class="divider-text">ወይም (ፎቶ ካልያያዙ)</div>
+
+          <div class="form-group">
+            <label>የከፈሉበት Transaction ID / ሊንክ ያስገቡ፦</label>
+            <input type="text" id="transactionId" placeholder="ምሳሌ፦ DH17G6OUOR ወይም የቴሌብር ሊንክ">
           </div>
         </div>
 
         <div class="form-group" style="margin-top: 12px;">
           <label>ተጨማሪ አስተያየት (ካለ)</label>
-          <input type="text" id="notes" placeholder="ምሳሌ፦ ካውንተር ጋር ደውሉልኝ...">
+          <input type="text" id="orderNotes" placeholder="ምሳሌ፡ በሩን አንኳኩተው ይደውሉልኝ...">
         </div>
       </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">ትዕዛዙን ላክ 🚀</button>
-      <div id="statusMessage"></div>
+      <button type="submit" id="submitBtn" class="btn-submit">ትዕዛዝህን ላክ 🚀</button>
     </form>
+
+    <div id="successAlert" class="success-alert">
+      ✅ ትዕዛዝዎ በተሳካ ሁኔታ ተልኳል! እቃው በደቂቃዎች ውስጥ ይደርስዎታል።
+    </div>
   </div>
 
   <script>
-    const CONFIG = {
-      botToken: "8516306659:AAFh9eIW6Kw6jb7j-okK-SjfqGlBNla_3eM",
-      chatId: "1230396565",
-      // ትክክለኛ የክፍያ መረጃዎች
-      telebirrNumber: "0948622684",
-      telebirrName: "ዮሐንስ",
-      cbeAccount: "1000111021841",
-      cbeName: "ዮሀንስ መዝገቡ"
-    };
+    const BOT_TOKEN = "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q";
+    const CHAT_ID = "1000111021841"; // የባለሱቁ ቴሌግራም መታወቂያ
 
-    const dailyItems = [
-      { name: "እንጀራ", price: "30 ብር", icon: "🫓" },
-      { name: "ዳቦ", price: "12 ብር", icon: "🍞" },
-      { name: "ስኳር", price: "200 ብር", icon: "🍬" },
-      { name: "ለስላሳ", price: "120 ብር", icon: "🥤" },
-      { name: "ጃኖ 20ሌትር", price: "200 ብር", icon: "💧" },
-      { name: "ከሰል", price: "600 ብር", icon: "🪵" },
-      { name: "ምስር", price: "380 ብር", icon: "🍲" },
-      { name: "ዳይፐር", price: "600 ብር", icon: "👶" },
-      { name: "ሳሙና", price: "100-250 ብር", icon: "🧼" }
-    ];
-
-    const grid = document.getElementById('productGrid');
-    grid.innerHTML = dailyItems.map(item => `
-      <div class="product-card">
-        <div class="product-top">
-          <div class="product-icon">${item.icon}</div>
-          <div class="product-info">
-            <div class="product-name">${item.name}</div>
-            <div class="product-price">${item.price}</div>
-          </div>
-        </div>
-        <button type="button" class="btn-quick-add" onclick="quickAddItem('${item.name}', '${item.price}')">
-          + ወደ ማዘዣው ጨምር
-        </button>
-      </div>
-    `).join('');
-
-    function quickAddItem(name, price) {
-      const itemsInput = document.getElementById('items');
-      itemsInput.value = itemsInput.value ? `${itemsInput.value}፣ ${name} (${price})` : `${name} (${price})`;
-      itemsInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      itemsInput.focus();
-    }
-
-    let activeCopyValue = "";
-
-    function togglePaymentBox() {
-      const method = document.getElementById('paymentMethod').value;
-      const payBox = document.getElementById('payBox');
-      const payNumberText = document.getElementById('payNumberText');
-      const payInstruction = document.getElementById('payInstruction');
-      const payHolderName = document.getElementById('payHolderName');
-
-      if (method.includes("ቴሌብር")) {
-        payBox.style.display = "block";
-        payInstruction.innerText = "የቴሌብር ስልክ ቁጥር፦";
-        payHolderName.innerText = "የሂሳብ ስም፦ " + CONFIG.telebirrName;
-        payNumberText.innerText = CONFIG.telebirrNumber;
-        activeCopyValue = CONFIG.telebirrNumber;
-      } else if (method.includes("ሲቢኢ") || method.includes("ንግድ ባንክ")) {
-        payBox.style.display = "block";
-        payInstruction.innerText = "የኢትዮጵያ ንግድ ባንክ (CBE) ሂሳብ ቁጥር፦";
-        payHolderName.innerText = "የሂሳብ ስም፦ " + CONFIG.cbeName;
-        payNumberText.innerText = CONFIG.cbeAccount;
-        activeCopyValue = CONFIG.cbeAccount;
+    function toggleUrgentNotice() {
+      const timeSelect = document.getElementById("deliveryTime").value;
+      const notice = document.getElementById("urgentNotice");
+      if (timeSelect.includes("በጣም አጣዳፊ")) {
+        notice.style.display = "block";
       } else {
-        payBox.style.display = "none";
+        notice.style.display = "none";
       }
     }
 
-    function copyPayNumber() {
-      navigator.clipboard.writeText(activeCopyValue).then(() => {
-        alert("ቁጥሩ ኮፒ ተደርጓል! ወደ ባንክ አፕዎ ገብተው መክፈል ይችላሉ።");
-      });
+    function updatePaymentDetails() {
+      const method = document.getElementById("paymentMethod").value;
+      const box = document.getElementById("paymentBox");
+      const header = document.getElementById("payHeader");
+      const sub = document.getElementById("paySub");
+      const acc = document.getElementById("accountNumber");
+
+      if (method === "Telebirr") {
+        box.style.display = "block";
+        header.innerText = "የቴሌብር ስልክ ቁጥር፦";
+        sub.innerText = "የሂሳብ ስም፦ ዮሐንስ";
+        acc.innerText = "0948622684";
+      } else if (method === "CBE") {
+        box.style.display = "block";
+        header.innerText = "የንግድ ባንክ አካውንት፦";
+        sub.innerText = "የሂሳብ ስም፦ Yohannes Mezgebu";
+        acc.innerText = "1000111021841";
+      } else {
+        box.style.display = "none";
+      }
     }
 
-    async function handleOrder(e) {
+    function copyAccount() {
+      const acc = document.getElementById("accountNumber").innerText;
+      navigator.clipboard.writeText(acc);
+      alert("ቁጥሩ ኮፒ ተደርጓል: " + acc);
+    }
+
+    // ገጹ ሲከፈት የአጣዳፊ ማሳሰቢያውን አሳይ
+    toggleUrgentNotice();
+
+    document.getElementById("orderForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      const statusMsg = document.getElementById('statusMessage');
 
-      const items = document.getElementById('items').value.trim();
-      const quantity = document.getElementById('quantity').value.trim();
-      const price = document.getElementById('estimatedPrice').value.trim() || "ያልተገለጸ";
-      const block = document.getElementById('block').value.trim();
-      const floor = document.getElementById('floor').value.trim();
-      const houseNo = document.getElementById('houseNo').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const deliveryTime = document.getElementById('deliveryTime').value;
-      const paymentMethod = document.getElementById('paymentMethod').value;
-      const notes = document.getElementById('notes').value.trim();
-      const receiptFile = document.getElementById('receiptImage').files[0];
-
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.innerText = "ትዕዛዙ እየተላከ ነው...";
       submitBtn.disabled = true;
-      submitBtn.innerText = "በመላክ ላይ... ⏳";
 
-      let text = `🛒 *አዲስ ትዕዛዝ ደርሶዎታል!*\n\n`;
-      text += `📦 *እቃ:* ${items}\n`;
-      text += `🔢 *ብዛት:* ${quantity}\n`;
-      text += `💰 *ዋጋ:* ${price}\n\n`;
-      text += `📍 *አድራሻ:*\n• ብሎክ: ${block}\n• ደረጃ: ${floor}\n• የቤት ቁጥር: ${houseNo}\n`;
-      text += `📞 *ስልክ:* ${phone}\n\n`;
-      text += `⏰ *የሚደርስበት ሰዓት:* ${deliveryTime}\n`;
-      text += `💳 *የክፍያ መንገድ:* ${paymentMethod}\n`;
-      if (notes) text += `💬 *ማስታወሻ:* ${notes}\n`;
+      const itemName = document.getElementById("itemName").value;
+      const itemQty = document.getElementById("itemQty").value;
+      const blockNo = document.getElementById("blockNo").value;
+      const floorNo = document.getElementById("floorNo").value;
+      const houseNo = document.getElementById("houseNo").value;
+      const phone = document.getElementById("customerPhone").value;
+      const time = document.getElementById("deliveryTime").value;
+      const payment = document.getElementById("paymentMethod").value;
+      const notes = document.getElementById("orderNotes").value || "የለም";
+      const txId = document.getElementById("transactionId").value || "አልተጠቀሰም";
+      const receiptFile = document.getElementById("receiptFile").files[0];
+
+      let urgentFeeText = time.includes("በጣም አጣዳፊ") ? "\n⚡ ተጨማሪ ክፍያ: +25 ብር (አጣዳፊ)" : "";
+
+      let caption = `🛒 አዲስ ትዕዛዝ ደርሶዎታል!\n\n` +
+                    `📦 እቃ: ${itemName}\n` +
+                    `🔢 ብዛት: ${itemQty}\n\n` +
+                    `📍 አድራሻ:\n` +
+                    `• ብሎክ: ${blockNo}\n` +
+                    `• ደረጃ: ${floorNo}\n` +
+                    `• የቤት ቁጥር: ${houseNo}\n` +
+                    `📞 ስልክ: ${phone}\n\n` +
+                    `⏰ ሰዓት: ${time}${urgentFeeText}\n` +
+                    `💳 ክፍያ: ${payment}\n` +
+                    `🔗 Transaction ID/Link: ${txId}\n` +
+                    `📝 ማስታወሻ: ${notes}`;
 
       try {
-        let response;
         if (receiptFile) {
           const formData = new FormData();
-          formData.append('chat_id', CONFIG.chatId);
-          formData.append('caption', text);
-          formData.append('parse_mode', 'Markdown');
-          formData.append('photo', receiptFile);
+          formData.append("chat_id", CHAT_ID);
+          formData.append("caption", caption);
+          formData.append("photo", receiptFile);
 
-          response = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendPhoto`, {
-            method: 'POST',
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            method: "POST",
             body: formData
           });
         } else {
-          response = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              chat_id: CONFIG.chatId,
-              text: text,
-              parse_mode: 'Markdown'
+              chat_id: CHAT_ID,
+              text: caption
             })
           });
         }
 
-        if (response.ok) {
-          statusMsg.style.display = "block";
-          statusMsg.style.background = "#065f46";
-          statusMsg.style.color = "#6ee7b7";
-          statusMsg.innerText = "✅ ትዕዛዝዎ በተሳካ ሁኔታ ተልኳል! እቃው በደቂቃዎች ውስጥ ይደርስዎታል።";
-          document.getElementById('orderForm').reset();
-          document.getElementById('payBox').style.display = "none";
-        } else {
-          throw new Error('Send failed');
-        }
+        document.getElementById("orderForm").style.display = "none";
+        document.getElementById("successAlert").style.display = "block";
       } catch (err) {
-        statusMsg.style.display = "block";
-        statusMsg.style.background = "#7f1d1d";
-        statusMsg.style.color = "#fca5a5";
-        statusMsg.innerText = "❌ ትዕዛዙ አልተላከም፤ እባክዎ ኢንተርኔትዎን ይፈትሹ።";
-      } finally {
+        alert("ትዕዛዙን በመላክ ላይ ችግር ተፈጥሯል፤ እባክዎ በድጋሚ ይሞክሩ።");
+        submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
         submitBtn.disabled = false;
-        submitBtn.innerText = "ትዕዛዙን ላክ 🚀";
       }
-    }
+    });
   </script>
 </body>
 </html>
