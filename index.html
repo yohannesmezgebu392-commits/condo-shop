@@ -70,18 +70,6 @@
       margin-top: 4px;
     }
 
-    .rule-banner {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px dashed var(--warning);
-      color: #fde68a;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
     .section-label {
       font-size: 0.95rem;
       font-weight: 800;
@@ -137,7 +125,7 @@
       background: var(--accent);
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 6px 10px;
       border-radius: 6px;
       font-size: 0.75rem;
       font-weight: 700;
@@ -146,10 +134,10 @@
     }
 
     .custom-add-box {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px dashed #334155;
-      padding: 10px;
-      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid #334155;
+      padding: 12px;
+      border-radius: 10px;
       margin-bottom: 14px;
     }
 
@@ -220,7 +208,7 @@
       margin-bottom: 5px;
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       background: #0b1329;
       border: 1px solid var(--card-border);
@@ -304,15 +292,6 @@
       box-shadow: none;
     }
 
-    .min-order-alert {
-      color: var(--danger);
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-align: center;
-      margin-top: 6px;
-      display: none;
-    }
-
     .success-alert {
       display: none;
       background: #064e3b;
@@ -383,38 +362,34 @@
     <div class="header">
       <div class="shop-badge" id="shopBadge">🏪 ሱቅ፦ ያብስራ ሱቅ</div>
       <h1>የኮንዶሚኒየም ፈጣን ማዘዣ</h1>
-      <p>ትዕዛዝዎን ይምረጡ፤ በደቂቃዎች ውስጥ ደጃፍዎ እናደርሳለን</p>
+      <p>የሚፈልጉትን እቃ ይምረጡ ወይም ይጻፉ፤ በደቂቃዎች ውስጥ ይደርሳል</p>
     </div>
 
-    <div class="rule-banner">
-      ⚠️ ዝቅተኛ የትዕዛዝ መጠን 100 ብር ነው። ከ 100 ብር በታች ፈጣን ማድረስ አይቻልም።
+    <!-- ከዝርዝሩ ውጪ ያለ ማንኛውም እቃ መጻፊያ ሳጥን -->
+    <div class="custom-add-box">
+      <div style="font-size:0.85rem; font-weight:700; color:#38bdf8; margin-bottom:6px;">✍️ የሚፈልጉትን ማንኛውንም እቃ እዚህ ይጻፉ</div>
+      <div class="row" style="margin-bottom:6px;">
+        <input type="text" id="customItemName" placeholder="የእቃው ስም (ምሳሌ፦ አጃ፣ ሻይ ቅጠል፣ ሻማ...)" style="flex:2;">
+        <input type="text" id="customItemQty" placeholder="መጠን (ምሳሌ፦ 2 ፍሬ)" style="flex:1;">
+      </div>
+      <button type="button" class="btn-add" onclick="addCustomItem()">+ እቃውን ወደ ቅርጫት ጨምር</button>
     </div>
 
-    <!-- 9 እቃዎች -->
-    <div class="section-label">🛒 ተወዳጅ እቃዎች</div>
+    <!-- 9 እቃዎች ካታሎግ -->
+    <div class="section-label">🛒 ወይም ከተለመዱ እቃዎች ይምረጡ</div>
     <div class="catalog-grid" id="catalogGrid"></div>
 
-    <!-- ከዝርዝሩ ውጪ ያለ እቃ መጻፊያ -->
-    <div class="custom-add-box">
-      <div style="font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:6px;">✍️ እዚህ ውስጥ የሌለ ሌላ እቃ ይፈልጋሉ?</div>
-      <div class="row">
-        <input type="text" id="customItemName" placeholder="የእቃው ስም (ምሳሌ፦ አጃ)" style="flex:2;">
-        <input type="text" id="customItemQty" placeholder="መጠን (ምሳሌ፦ 1 ፓኬት)" style="flex:1;">
-        <button type="button" class="btn-add" onclick="addCustomItem()" style="flex:1;">+ ጨምር</button>
-      </div>
-    </div>
-
     <form id="orderForm">
-      <!-- የተመረጡ እቃዎች ቅርጫት -->
+      <!-- ቅርጫት -->
       <div class="card">
-        <div class="section-label">🛍️ የእርስዎ ቅርጫት (<span id="cartCount">0</span> እቃ)</div>
+        <div class="section-label">🛍️ የታዘዙ እቃዎች (<span id="cartCount">0</span>)</div>
         <div id="cartItemsContainer">
-          <p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም፤ ከላይ «+» ይጫኑ</p>
+          <p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም</p>
         </div>
         
         <div class="cart-summary" id="cartSummarySection" style="display:none;">
-          <div class="summary-row">
-            <span>የእቃዎች ድምር፦</span>
+          <div class="summary-row" id="catalogSubRow">
+            <span>የተመረጡ እቃዎች ድምር፦</span>
             <span><strong id="subTotal">0</strong> ብር</span>
           </div>
           <div class="summary-row" id="urgentFeeRow">
@@ -422,8 +397,8 @@
             <span><strong id="urgentFeeDisplay">25</strong> ብር</span>
           </div>
           <div class="summary-row total-row">
-            <span>አጠቃላይ የሚከፈለው፦</span>
-            <span><strong id="grandTotal">0</strong> ብር</span>
+            <span>የሚከፈለው፦</span>
+            <span><strong id="grandTotal">0</strong> ብር <span id="customNotice" style="font-size:0.75rem; color:#fde68a;"></span></span>
           </div>
         </div>
       </div>
@@ -470,13 +445,13 @@
         <div class="form-group">
           <label>የክፍያ አማራጭ</label>
           <select id="paymentMethod" onchange="updatePaymentDetails()">
+            <option value="Cash" selected>በእጅ (Cash on Delivery)</option>
             <option value="Telebirr">ቴሌብር (Telebirr)</option>
             <option value="CBE">የኢትዮጵያ ንግድ ባንክ (CBE)</option>
-            <option value="Cash">በእጅ (Cash on Delivery)</option>
           </select>
         </div>
 
-        <div id="paymentBox" class="payment-box">
+        <div id="paymentBox" class="payment-box" style="display:none;">
           <div id="payHeader" style="font-size:0.8rem; color:#7dd3fc; font-weight:700;">የቴሌብር ቁጥር፦</div>
           <div class="account-badge">
             <span id="accountNumber" class="account-number">0948622684</span>
@@ -494,7 +469,6 @@
       </div>
 
       <button type="submit" id="submitBtn" class="btn-submit" disabled>ትዕዛዝህን ላክ 🚀</button>
-      <div id="minOrderAlert" class="min-order-alert">❌ ዝቅተኛው የትዕዛዝ መጠን 100 ብር ነው። እባክዎ ተጨማሪ እቃ ይምረጡ።</div>
     </form>
 
     <div id="successAlert" class="success-alert">
@@ -503,7 +477,7 @@
 
     <!-- የባለሱቅ ማስተካከያ ክፍል -->
     <div class="admin-toggle">
-      <button type="button" class="btn-admin" onclick="promptAdminLogin()">🔒 የሱቅ ዋጋና መረጃ ማስተካከያ (ለባለሱቁ)</button>
+      <button type="button" class="btn-admin" onclick="promptAdminLogin()">🔒 የሱቅ ዋጋና ቦት ማስተካከያ</button>
     </div>
 
     <div id="adminPanel" class="admin-panel">
@@ -520,7 +494,11 @@
         <label>የቴሌግራም Chat ID</label>
         <input type="text" id="settingChatId">
       </div>
-      <h4 style="font-size:0.8rem; color:#fde68a; margin:8px 0;">የ 9ኙ እቃዎች ዋጋ ማስተካከያ (ብር)፦</h4>
+      <div class="form-group">
+        <label>የቴሌግራም Bot Token (ከ @BotFather)</label>
+        <input type="text" id="settingBotToken">
+      </div>
+      <h4 style="font-size:0.8rem; color:#fde68a; margin:8px 0;">የ 9ኙ እቃዎች ዋጋ (ብር)፦</h4>
       <div id="priceEditorList"></div>
       <button type="button" class="btn-save-settings" onclick="saveSettings()">መረጃዎችን ሴቭ አድርግ 💾</button>
     </div>
@@ -529,9 +507,6 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const SHOP_ID = urlParams.get('shop') || 'default_shop';
-
-    const BOT_TOKEN = "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q";
-    const DEFAULT_CHAT_ID = "1230396565"; // ትክክለኛው የቴሌግራም ID
 
     const defaultCatalog = [
       { id: 1, name: "እንጀራ (ፍሬ)", icon: "🫓", price: 30 },
@@ -548,7 +523,8 @@
     let currentShopSettings = {
       name: "ያብስራ ሱቅ",
       telebirr: "0948622684",
-      chatId: DEFAULT_CHAT_ID,
+      chatId: "1230396565",
+      botToken: "8516306659:AAFhmw-kGsq2u2qQO1dZ_W1P8mC6Qy-pM1Q",
       catalog: defaultCatalog
     };
 
@@ -560,17 +536,9 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          // የድሮውን የተሳሳተ የባንክ ቁጥር በራስ-ሰር አስተካክል
-          if (!parsed.chatId || parsed.chatId === "1000111021841") {
-            parsed.chatId = DEFAULT_CHAT_ID;
-            localStorage.setItem(`shop_settings_${SHOP_ID}`, JSON.stringify(parsed));
-          }
+          if (!parsed.chatId || parsed.chatId === "1000111021841") parsed.chatId = "1230396565";
           currentShopSettings = parsed;
-        } catch (e) {
-          currentShopSettings.chatId = DEFAULT_CHAT_ID;
-        }
-      } else {
-        currentShopSettings.chatId = DEFAULT_CHAT_ID;
+        } catch (e) {}
       }
 
       document.getElementById("shopBadge").innerText = `🏪 ሱቅ፦ ${currentShopSettings.name}`;
@@ -632,10 +600,9 @@
       document.getElementById("cartCount").innerText = totalCount;
 
       if (totalCount === 0) {
-        container.innerHTML = `<p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም፤ ከላይ «+» ይጫኑ</p>`;
+        container.innerHTML = `<p style="font-size:0.8rem; color:var(--muted); text-align:center; padding:10px 0;">እስካሁን ምንም እቃ አልመረጡም</p>`;
         document.getElementById("cartSummarySection").style.display = "none";
         document.getElementById("submitBtn").disabled = true;
-        document.getElementById("minOrderAlert").style.display = "none";
         return;
       }
 
@@ -669,7 +636,7 @@
         container.innerHTML += `
           <div class="cart-item">
             <div>
-              <strong>✨ ${cItem.name}</strong> (${cItem.qty})<br>
+              <strong>✍️ ${cItem.name}</strong> (${cItem.qty})<br>
               <span style="font-size:0.75rem; color:#fde68a;">ዋጋው በሱቁ ይታሰባል</span>
             </div>
             <div>
@@ -709,16 +676,16 @@
       document.getElementById("subTotal").innerText = sub;
       document.getElementById("grandTotal").innerText = sub + urgentFee;
 
-      const submitBtn = document.getElementById("submitBtn");
-      const minAlert = document.getElementById("minOrderAlert");
-
-      if (sub < 100 && customItems.length === 0 && Object.keys(cart).length > 0) {
-        submitBtn.disabled = true;
-        minAlert.style.display = "block";
-      } else if (Object.keys(cart).length > 0 || customItems.length > 0) {
-        submitBtn.disabled = false;
-        minAlert.style.display = "none";
+      const notice = document.getElementById("customNotice");
+      if (customItems.length > 0) {
+        notice.innerText = " (+ የተጻፉ እቃዎች ዋጋ)";
+      } else {
+        notice.innerText = "";
       }
+
+      // እቃ ካለ ማዘዣ ቁልፉ ክፍት ይሆናል
+      const totalCount = Object.keys(cart).length + customItems.length;
+      document.getElementById("submitBtn").disabled = (totalCount === 0);
     }
 
     function updatePaymentDetails() {
@@ -747,11 +714,11 @@
     }
 
     function promptAdminLogin() {
-      const pin = prompt("እባክዎ የባለሱቁን ሚስጥር ቁጥር (PIN) ያስገቡ፦");
+      const pin = prompt("የባለሱቁን PIN ያስገቡ፦");
       if (pin === "1234") {
         toggleAdminPanel();
       } else if (pin !== null) {
-        alert("የተሳሳተ የይለፍ ቃል ነው!");
+        alert("የተሳሳተ PIN ነው!");
       }
     }
 
@@ -762,6 +729,7 @@
         document.getElementById("settingShopName").value = currentShopSettings.name;
         document.getElementById("settingTelebirr").value = currentShopSettings.telebirr;
         document.getElementById("settingChatId").value = currentShopSettings.chatId;
+        document.getElementById("settingBotToken").value = currentShopSettings.botToken;
 
         const list = document.getElementById("priceEditorList");
         list.innerHTML = "";
@@ -779,7 +747,8 @@
     function saveSettings() {
       currentShopSettings.name = document.getElementById("settingShopName").value;
       currentShopSettings.telebirr = document.getElementById("settingTelebirr").value;
-      currentShopSettings.chatId = document.getElementById("settingChatId").value || DEFAULT_CHAT_ID;
+      currentShopSettings.chatId = document.getElementById("settingChatId").value || "1230396565";
+      currentShopSettings.botToken = document.getElementById("settingBotToken").value || currentShopSettings.botToken;
 
       currentShopSettings.catalog.forEach(item => {
         const inp = document.getElementById(`price_item_${item.id}`);
@@ -787,7 +756,7 @@
       });
 
       localStorage.setItem(`shop_settings_${SHOP_ID}`, JSON.stringify(currentShopSettings));
-      alert("የሱቅ መረጃዎችና ዋጋዎች በተሳካ ሁኔታ ተቀምጠዋል!");
+      alert("መረጃዎች ተቀምጠዋል!");
       loadShopData();
       renderCart();
       document.getElementById("adminPanel").style.display = "none";
@@ -810,7 +779,7 @@
       });
 
       if (customItems.length > 0) {
-        orderItemsText += `\n✨ ተጨማሪ የታዘዙ እቃዎች:\n`;
+        orderItemsText += `\n✍️ የተጻፉ እቃዎች:\n`;
         customItems.forEach(ci => {
           orderItemsText += `• ${ci.name} (${ci.qty})\n`;
         });
@@ -830,9 +799,9 @@
 
       let caption = `🛒 አዲስ ትዕዛዝ (${currentShopSettings.name})\n\n` +
                     `📦 የታዘዙ እቃዎች:\n${orderItemsText}\n` +
-                    `💰 የእቃዎች ድምር: ${subTotal} ብር\n` +
+                    `💰 ድምር: ${subTotal} ብር\n` +
                     (urgentFee > 0 ? `⚡ አጣዳፊ ማድረሻ: +25 ብር\n` : "") +
-                    `💵 ጠቅላላ ክፍያ: ${totalToPay} ብር` + (customItems.length > 0 ? " (+ ተጨማሪ እቃዎች ዋጋ)" : "") + `\n\n` +
+                    `💵 ጠቅላላ ክፍያ: ${totalToPay} ብር` + (customItems.length > 0 ? " (+ የተጻፉ እቃዎች ዋጋ)" : "") + `\n\n` +
                     `📍 አድራሻ:\n` +
                     `• ብሎክ: ${blockNo}\n` +
                     `• ደረጃ: ${floorNo}\n` +
@@ -842,26 +811,27 @@
                     `💳 ክፍያ: ${payment}\n` +
                     `🔗 Tx ID / Link: ${txId}`;
 
-      const targetChatId = currentShopSettings.chatId || DEFAULT_CHAT_ID;
+      const activeToken = currentShopSettings.botToken;
+      const activeChatId = currentShopSettings.chatId;
 
       try {
         let response;
         if (receiptFile) {
           const formData = new FormData();
-          formData.append("chat_id", targetChatId);
+          formData.append("chat_id", activeChatId);
           formData.append("caption", caption);
           formData.append("photo", receiptFile);
 
-          response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+          response = await fetch(`https://api.telegram.org/bot${activeToken}/sendPhoto`, {
             method: "POST",
             body: formData
           });
         } else {
-          response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          response = await fetch(`https://api.telegram.org/bot${activeToken}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              chat_id: targetChatId,
+              chat_id: activeChatId,
               text: caption
             })
           });
@@ -873,7 +843,7 @@
           document.getElementById("orderForm").style.display = "none";
           document.getElementById("successAlert").style.display = "block";
         } else {
-          alert("ቴሌግራም ስህተት አሳይቷል፦ " + data.description + "\n(Chat ID: " + targetChatId + ")");
+          alert("ቴሌግራም ስህተት አሳይቷል፦ " + data.description + "\n\nምክንያት፦ Bot Token ተሳስቷል ወይም ተሰርዟል። እባክዎ BotFather ላይ አዲስ Token ያረጋግጡ።");
           submitBtn.innerText = "ትዕዛዝህን ላክ 🚀";
           submitBtn.disabled = false;
         }
